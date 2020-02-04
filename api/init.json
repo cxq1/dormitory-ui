@@ -69,26 +69,21 @@
           "child": [
             {
               "title": "管理员列表",
-              "href": "page/admin/list.html",
+              "href": "page/admin-list.html",
               "icon": "fa fa-list-alt",
               "target": "_self"
             },
             {
               "title": "角色管理",
-              "href": "page/admin/role.html",
+              "href": "page/admin-role.html",
               "icon": "fa fa-navicon",
               "target": "_self"
             },
-            {
-                "title": "权限分类",
-                "icon": "fa fa-list-alt",
-                "href": "page/admin/cate.html",
-                "target": "_self"
-              },
+            
               {
                 "title": "权限管理",
                 "icon": "fa fa-list-alt",
-                "href": "page/admin/rule.html",
+                "href": "page/admin-rule.html",
                 "target": "_self"
               }
 
