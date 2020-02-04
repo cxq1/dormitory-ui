@@ -5,8 +5,6 @@ layuimini后台模板
 
 项目会不定时进行更新，建议star和watch一份。
 
-技术交流QQ群：[561838086](https://jq.qq.com/?_wv=1027&k=5JRGVfe) `加群请备注来源：如gitee、github、官网等`。
-
 ## 代码仓库(iframe 多tab版)
  * 在线预览地址：[http://layuimini.99php.cn](http://layuimini.99php.cn)
  * GitHub仓库地址：[https://github.com/zhongshaofa/layuimini](https://github.com/zhongshaofa/layuimini)
@@ -37,11 +35,5 @@ layuimini后台模板
 
 文档地址：[查看文档](https://github.com/zhongshaofa/layuimini/wiki)
  
- ## 捐赠支持
- 
-开源项目不易，若此项目能得到你的青睐，可以捐赠支持作者持续开发与维护，感谢所有支持开源的朋友。
-
- ![Image text](https://chung-common.oss-cn-beijing.aliyuncs.com/donate_qrcode.png)
-
-捐赠名单：[查看名单](https://github.com/zhongshaofa/layuimini/wiki/donate) 
-# dormitory-ui
+使用 git clone 项目  git clone git@github.com:cxq1/dormitory-ui.git
+使用   NodeJS本地搭建静态网页服务器 参考https://www.cnblogs.com/Reclouds-shangri-la/p/11274475.html 在对应的文件夹目录下启动服务
