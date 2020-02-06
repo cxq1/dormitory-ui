@@ -3,6 +3,7 @@
   "msg": "",
   "count": 1000,
   "data": [
+
     {
       "id": 10000,
       "username": "user-0",
@@ -17,15 +18,12 @@
     },
     {
       "id": 10001,
-      "username": "user-1",
-      "sex": "男",
-      "phone": "手机-1",
-      "mail": "邮箱-1",
-      "experience": 884,
-      "logins": 58,
-      "wealth": 64928690,
-      "role": "词人",
-      "score": 27
+      "dor-type": "单人宿舍",
+      "dor-price": "100",
+      "dor-number": "201",
+      "dor-location": "二楼东侧",
+      "dor-state": "空闲",
+      "dor-remark": "...",
     },
     {
       "id": 10002,
