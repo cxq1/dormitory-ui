@@ -24,6 +24,7 @@
                                 <input type="text" name="username" autocomplete="off" class="layui-input">
                             </div>
                         </div>
+
                         <div class="layui-inline">
                             <label class="layui-form-label">角色</label>
                             <div class="layui-input-inline">
@@ -92,15 +93,17 @@
                 {type: "checkbox", width: 50, fixed: "left"},
                 {field: 'id', width: 100, title: 'ID', sort: true},
                 {field: 'username', width: 100, title: '用户名'},
+                {field: 'sex', width: 80, title: '性别', sort: true},
                 {field: 'phone', width: 120, title: '手机', sort: true},
                 {field: 'mail', width: 180, title: '邮箱'},
                 {field: 'role', title: '角色', width: 80},
                 {field: 'gmt_created_time', width: 200, title: '加入时间', sort: true},
-                {field: 'number', width: 200, title: '证件号', sort: true},
+                {field: 'number', width: 160, title: '证件号', sort: true},
                 {field: 'status', width: 80, title: '状态',templet:'#currentStatue'},
                 /*{field: 'classify', width: 80, title: '职业'},
                 {field: 'wealth', width: 135, title: '财富', sort: true},*/
-                {title: '操作', width: 150, templet: '#currentTableBar', fixed: "right", align: "center"}
+
+                {title: '操作', width: 120, templet: '#currentTableBar', fixed: "right", align: "center"}
             ]],
             limits: [10, 15, 20, 25, 50, 100],
             limit: 15,

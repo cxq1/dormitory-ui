@@ -19,11 +19,11 @@
     {
       "id": 10001,
       "dor-type": "单人宿舍",
-      "dor-price": "100",
-      "dor-number": "201",
+      "dor-price": 100,
+      "dor-number": 201,
       "dor-location": "二楼东侧",
       "dor-state": "空闲",
-      "dor-remark": "...",
+      "dor-remark": "..."
     },
     {
       "id": 10002,
