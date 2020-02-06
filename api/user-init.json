@@ -37,13 +37,13 @@
             "target": "_self",
             "child": [
               {
-                "title": "普通申请",
-                "href": "page/form.html",
+                "title": "住宿申请",
+                "href": "page/apply.html",
                 "icon": "fa fa-list-alt",
                 "target": "_self"
               },
               {
-                "title": "分步申请",
+                "title": "其他功能",
                 "href": "page/form-step.html",
                 "icon": "fa fa-navicon",
                 "target": "_self"
