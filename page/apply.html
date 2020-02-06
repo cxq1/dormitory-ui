@@ -22,7 +22,7 @@
         </fieldset>
 
         <form class="layui-form" action="">
-            <div class="layui-form-item">
+            <!-- <div class="layui-form-item">
                 <label class="layui-form-label">请输入姓名</label>
                 <div class="layui-input-block">
                     <input type="text" name="name" lay-verify="name" autocomplete="off" placeholder="请输入姓名" class="layui-input">
@@ -55,7 +55,7 @@
                 <div class="layui-input-block">
                     <input type="text" name="identity" lay-verify="identity" placeholder="请输入身份证" autocomplete="off" class="layui-input">
                 </div>
-            </div>
+            </div> -->
 
             <div class="layui-form-item">
                 <label class="layui-form-label">宿舍类型</label>
@@ -85,21 +85,23 @@
                 </div>
             </div>
             
-            <div class="layui-inline">
-                <label class="layui-form-label">日期选择</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="date" id="date" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">入住日期</label>
+                    <div class="layui-input-block">
+                        <!-- <input type="text" name="date" id="date1" autocomplete="off" class="layui-input"> -->
+                        <input type="text" name="date" id="date" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                    </div>
                 </div>
             </div>
             
-            <div class="layui-form-item">
+            <!-- <div class="layui-form-item">
                 <label class="layui-form-label">性  别</label>
                 <div class="layui-input-block">
                     <input type="radio" name="sex" value="男" title="男" checked="">
                     <input type="radio" name="sex" value="女" title="女">
-                    <!-- <input type="radio" name="sex" value="禁" title="禁用" disabled=""> -->
                 </div>
-            </div>
+            </div> -->
 
             <div class="layui-form-item">
                 <label class="layui-form-label">备注</label>
@@ -111,7 +113,7 @@
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">申请理由</label>
                 <div class="layui-input-block">
-                    <textarea placeholder="请输入申请有" class="layui-textarea" lay-verify="reason" name="reason"></textarea>
+                    <textarea placeholder="请输入申请理由" class="layui-textarea" lay-verify="reason" name="reason"></textarea>
                 </div>
             </div>
 
