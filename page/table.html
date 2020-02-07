@@ -19,27 +19,27 @@
                 <form class="layui-form layui-form-pane" action="">
                     <div class="layui-form-item">
                         <div class="layui-inline">
-                            <label class="layui-form-label">用户姓名</label>
+                            <label class="layui-form-label">房间类型</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="username" autocomplete="off" class="layui-input">
+                                <input type="text" name="dor-type" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
-                            <label class="layui-form-label">用户性别</label>
+                            <label class="layui-form-label">房间价格</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="sex" autocomplete="off" class="layui-input">
+                                <input type="text" name="dor-price" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
-                            <label class="layui-form-label">用户手机</label>
+                            <label class="layui-form-label">房间号码</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="phone" autocomplete="off" class="layui-input">
+                                <input type="text" name="dor-number" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
-                            <label class="layui-form-label">用户角色</label>
+                            <label class="layui-form-label">房间状态</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="role" autocomplete="off" class="layui-input">
+                                <input type="text" name="dor-state" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
@@ -85,15 +85,13 @@
             }],
             cols: [[
                 {type: "checkbox", width: 50, fixed: "left"},
-                {field: 'id', width: 80, title: 'ID', sort: true},
-                {field: 'username', width: 80, title: '用户名'},
-                {field: 'sex', width: 80, title: '性别', sort: true},
-                {field: 'phone', width: 120, title: '手机'},
-                {field: 'mail', title: '邮箱', minWidth: 150},
-                {field: 'experience', width: 80, title: '积分', sort: true},
-                {field: 'score', width: 80, title: '评分', sort: true},
-                {field: 'role', width: 80, title: '角色'},
-                {field: 'wealth', width: 135, title: '财富', sort: true},
+                {field: 'id', width: 120, title: 'id', sort: true},
+                {field: 'dor-type', width: 120, title: '房间类型', sort: true},
+                {field: 'dor-price', width: 120, title: '房间价格'},
+                {field: 'dor-number', width: 120, title: '房间号码', sort: true},
+                {field: 'dor-location', width: 200, title: '房间位置'},
+                {field: 'dor-state', width: 100,title: '房间状态'},
+                {field: 'dor-remark', width: 200, title: '房间备注', sort: true},
                 {title: '操作', minWidth: 50, templet: '#currentTableBar', fixed: "right", align: "center"}
             ]],
             limits: [10, 15, 20, 25, 50, 100],

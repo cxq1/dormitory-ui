@@ -309,7 +309,7 @@
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">文本域</label>
                 <div class="layui-input-block">
-                    <textarea placeholder="请输入内容" class="layui-textarea" name="desc"></textarea>
+                    <textarea placeholder="" lay-verify="reason" class="layui-textarea" name=""></textarea>
                 </div>
             </div>
 
@@ -466,6 +466,11 @@
             title: function (value) {
                 if (value.length < 5) {
                     return '标题至少得5个字符啊';
+                }
+            },
+            reason: function (value) {
+                if (value.length < 5) {
+                    return '内容至少得5个字符啊';
                 }
             }
             , pass: [
