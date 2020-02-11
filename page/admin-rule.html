@@ -57,7 +57,7 @@
             </div>
         </script>
 
-        <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
+        <table class="layui-hide"  id="currentTableId" lay-filter="currentTableFilter"></table>
 
         <script type="text/html" id="currentTableBar">
             <a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
@@ -71,6 +71,7 @@
 </div>
 <script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script>
+
     layui.use(['form', 'table'], function () {
         var $ = layui.jquery,
             form = layui.form,
@@ -78,6 +79,7 @@
             layuimini = layui.layuimini;
 
         table.render({
+            
             elem: '#currentTableId',
             url: 'http://localhost:8088/dormitory/power/list',
             parseData: function(res){
@@ -108,7 +110,7 @@
             limit: 15,
             page: true
         });
-
+       
         // 监听搜索操作
         form.on('submit(data-search-btn)', function (data) {
             var result = JSON.stringify(data.field);
@@ -157,11 +159,12 @@
 
         //监听表格复选框选择
         table.on('checkbox(currentTableFilter)', function (obj) {
-            console.log(obj)
+            
         });
 
         table.on('tool(currentTableFilter)', function (obj) {
             var data = obj.data;
+            
             if (obj.event === 'edit') {
 
                 var index = layer.open({
@@ -171,7 +174,7 @@
                     maxmin:true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: '/page/table/rule-edit.html',
+                    content: '/page/table/rule-edit.html?ruleId='+data.id,
                 });
                 $(window).on("resize", function () {
                     layer.full(index);
@@ -180,7 +183,25 @@
             } else if (obj.event === 'delete') {
                 layer.confirm('真的删除行么', function (index) {
                     obj.del();
-                    layer.close(index);
+                    
+                    
+
+                    //向服务端发送删除指令
+                        $.ajax({
+                            type: "DELETE",
+                            url: "http://localhost:8088/dormitory/power/delete/" + data.id,
+                            success: function (result) {
+                                console.log(result);
+                            }
+
+                        });
+                        layer.msg('删除成功', {
+                            time: 800
+                        });
+                        table.reload('empTable', {
+                            url: "http://192.168.50.1:8000/admin-index.html#page/admin-rule.html?mpi=m-p-i-10"
+                        })
+                        layer.close(index);
                 });
             }
         });
