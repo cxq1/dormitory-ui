@@ -65,7 +65,13 @@
         </div>
         <div class="layui-form-mid layui-word-aux">本地演示数据，分页选中和其他页一样，这不是BUG</div>
     </div> -->
-    
+    <div class="layui-form-item">
+        <label class="layui-form-label">选择角色</label>
+        <div class="layui-input-inline">
+            <input type="text" name="roleName" placeholder="请输入" autocomplete="off" class="layui-input" id="roleName" value="" ts-selected="002,003">
+        </div>
+       
+    </div>
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">描述</label>
         <div class="layui-input-block">
@@ -96,23 +102,32 @@
             tableSelect = layui.tableSelect;
 
         tableSelect.render({
-            elem: '#demo',
+            elem: '#roleName',
             searchKey: 'my',
             checkedKey: 'id',
             searchPlaceholder: '自定义文字和name',
             table: {
-                url: '../../api/tableSelect.json',
+                url: 'http://localhost:8088/dormitory/role/list',
+                 parseData: function(res){
+                  return {
+                    "code": res.code, //解析接口状态
+                    "msg": res.message, //解析提示文本
+                    "count": res.count, //解析数据长度
+                    "data": res.data.data //解析数据列表
+                  };
+                  
+                },
                 cols: [[
                     { type: 'checkbox' },
                     { field: 'id', title: 'ID', width: 100 },
-                    { field: 'username', title: '姓名', width: 300 },
-                    { field: 'sex', title: '性别', width: 100 }
+                    { field: 'roleName', title: '角色名', width: 300 }
+                    // { field: 'sex', title: '性别', width: 100 }
                 ]]
             },
             done: function (elem, data) {
                 var NEWJSON = []
                 layui.each(data.data, function (index, item) {
-                    NEWJSON.push(item.username)
+                    NEWJSON.push(item.roleName)
                 })
                 elem.val(NEWJSON.join(","))
             }
@@ -188,6 +203,7 @@
             $("#id").val(result.data.data.id);
             $("#powerRule").val(result.data.data.powerRule);
             $("#powerName").val(result.data.data.powerName);
+            $("#roleName").val(result.data.data.roleName);
             $("#info").val(result.data.data.info);
             var status= $("#status").val(result.data.data.status);
             if(status===0){
@@ -214,6 +230,7 @@
                     }, function () {
                         let index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
                         parent.layer.close(index); //再执行关闭
+                         parent.location.reload();
                     });
                 } else {
                     layer.msg('更新失败', {

@@ -99,8 +99,9 @@
             }],
             cols: [[
                 {type: "checkbox", width: 50, fixed: "left"},
-                {field: 'id', width: 80, title: 'ID', sort: true},
+                {field: 'id', width: 180, title: 'ID', sort: true},
                 {field: 'powerName', width: 180, title: '权限名'},
+                {field: 'roleName', width: 180, title: '角色名'},
                 {field: 'powerRule', width: 180, title: '拥有权限规则'},
                 {field: 'info', width: 180, title: '描述'},
                 {field: 'status', width: 180, title: '状态',templet:'#currentStatue'},
@@ -135,7 +136,7 @@
         $(".data-add-btn").on("click", function () {
 
             var index = layer.open({
-                title: '添加用户',
+                title: '添加权限',
                 type: 2,
                 shade: 0.2,
                 maxmin:true,
