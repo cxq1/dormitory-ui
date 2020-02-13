@@ -75,7 +75,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">状态 启用</label>
         <div class="layui-input-block">
-            <input type="checkbox" checked="" value="0" name="status" id="status" lay-skin="switch" lay-text="ON|OFF">
+            <input type="checkbox" checked="" name="status" id="status" lay-skin="switch" lay-text="ON|OFF">
         </div>
     </div>
     <div class="layui-form-item">
@@ -205,15 +205,24 @@
                 var status= $("#status").val(result.data.data.status);
                 if(status===0){
                     $("#status").attr('checked','true')
+                }else{
+                    $("#status").removeAttr("checked")
                 }
+                form.render()
             }
         });
        //监听提交
         form.on('submit(saveBtn)', function (data) {
-            var powers=data.field.powers;
-            var pArr = powers.split(",");
+            // var powers=data.field.powers;
+            // var pArr = powers.split(",");
             
-            data.field.powers=pArr;
+            // data.field.powers=pArr;
+            var st = data.field.status;
+            if(st==="on"){
+                data.field.status=0;
+            }else{
+                data.field.status=1;
+            }
             console.log(data.field)  
              $.ajax({
             type: 'post',

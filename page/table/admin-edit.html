@@ -83,7 +83,7 @@ overflow: visible !important;
     </div> -->
     <div class="layui-form-item">
         <label class="layui-form-label">状态 默认禁用</label>
-        <div class="layui-input-block">
+        <div class="layui-input-block" id="stdiv">
             <input type="checkbox" name="status" id="status" lay-skin="switch" lay-text="ON|OFF">
         </div>
     </div>
@@ -121,9 +121,12 @@ overflow: visible !important;
                 var status= result.data.data.status;
                 if(status===0){
                     $("#status").attr('checked','true')
+                    
+                }else{
+                    $("#status").removeAttr("checked")
                 }
                 var sex= result.data.data.sex;
-                console.log(sex)
+                // console.log(sex)
                 if(sex==="男"){
                     $("#sex1").attr("checked","checked");
                     $("#sex2").removeAttr("checked");  

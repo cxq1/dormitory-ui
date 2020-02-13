@@ -66,6 +66,7 @@
         <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
 
         <script type="text/html" id="currentTableBar">
+        <a class="layui-btn layui-btn-xs data-count-edit" lay-event="mdpw">修改密码</a>
             <a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
             <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
         </script>
@@ -107,7 +108,7 @@
             }],
             cols: [[
                 {type: "checkbox", width: 50, fixed: "left"}, 
-                {field: 'uid', width: 100, title: 'ID', sort: true},
+                // {field: 'uid', width: 100, title: 'ID', sort: true},
                 {field: 'username', width: 100, title: '用户名'},
                 {field: 'name', width: 100, title: '真实姓名'},
                 {field: 'sex', width: 60, title: '性别', sort: true},
@@ -120,7 +121,7 @@
                 /*{field: 'classify', width: 80, title: '职业'},
                 {field: 'wealth', width: 135, title: '财富', sort: true},*/
 
-                {title: '操作', width: 120, templet: '#currentTableBar', fixed: "right", align: "center"}
+                {title: '操作', width: 220, templet: '#currentTableBar', fixed: "right", align: "center"}
             ]],
             limits: [10, 15, 20, 25, 50, 100],
             limit: 10,
@@ -248,6 +249,20 @@
                         })
                         layer.close(index);
                 });
+            }else if(obj.event==='mdpw'){
+                var index = layer.open({
+                    title: '修改密码',
+                    type: 2,
+                    shade: 0.2,
+                    maxmin:true,
+                    shadeClose: true,
+                    area: ['100%', '100%'],
+                    content: '/page/table/admin-mdpw.html?userId='+data.uid,
+                });
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
+                return false;
             }
         });
 

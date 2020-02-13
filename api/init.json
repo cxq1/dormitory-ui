@@ -74,7 +74,7 @@
           "target": "_self",
           "child": [
             {
-              "title": "管理员列表",
+              "title": "管理用户列表",
               "href": "page/admin-list.html",
               "icon": "fa fa-list-alt",
               "target": "_self"
