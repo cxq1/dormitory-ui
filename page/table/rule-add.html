@@ -171,8 +171,8 @@
         //监听提交
         form.on('submit(saveBtn)', function (data) {
             
-            // var roles=data.field.roles;
-            // var rArr = roles.split(",");
+            var roles=data.field.roles;
+            var rArr = roles.split(",");
             var st=data.field.status;
             if(st==="on"){
                 data.field.status=0;    
@@ -184,7 +184,7 @@
              console.log(data.field)
              $.ajax({
             type: 'post',
-            url: "http://localhost:8088/dormitory/role/add",
+            url: "http://localhost:8088/dormitory/power/add",
             contentType: "application/json;charset=UTF-8",
             data: JSON.stringify(data.field),
             dataType: "json",

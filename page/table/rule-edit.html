@@ -205,10 +205,13 @@
             $("#powerName").val(result.data.data.powerName);
             $("#roleName").val(result.data.data.roleName);
             $("#info").val(result.data.data.info);
-            var status= $("#status").val(result.data.data.status);
+            var status= result.data.data.status;
             if(status===0){
                 $("#status").attr('checked','true')
+            }else{
+                $("#status").removeAttr("checked"); 
             }
+            form.render()
         }
     });
 

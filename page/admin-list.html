@@ -19,28 +19,33 @@
                 <form class="layui-form layui-form-pane" action="">
                     <div class="layui-form-item">
                         <div class="layui-inline">
-                            <label class="layui-form-label">用户姓名</label>
+                            <label class="layui-form-label">昵称</label>
                             <div class="layui-input-inline">
                                 <input type="text" name="username" autocomplete="off" class="layui-input">
                             </div>
                         </div>
-
+                        <div class="layui-inline">
+                            <label class="layui-form-label">用户名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="name" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
                         <div class="layui-inline">
                             <label class="layui-form-label">角色</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="sex" autocomplete="off" class="layui-input">
+                                <input type="text" name="roleName" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
                             <label class="layui-form-label">证件号</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="city" autocomplete="off" class="layui-input">
+                                <input type="text" name="number" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
                             <label class="layui-form-label">邮箱</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="classify" autocomplete="off" class="layui-input">
+                                <input type="text" name="mail" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
@@ -81,8 +86,19 @@
             layuimini = layui.layuimini;
 
         table.render({
+            type: "post",
             elem: '#currentTableId',
-            url: 'http://114.112.193.6:32500/html/web/controller/share/share.html#5e3ce3d23abba3078b9187c1',
+            url: 'http://localhost:8088/dormitory/user/list',
+            toolRow:true,
+            parseData: function(res){
+              return {
+                "code": res.code, //解析接口状态
+                "msg": res.message, //解析提示文本
+                "count": res.count, //解析数据长度
+                "data": res.data.data //解析数据列表
+              };
+              
+            },
             toolbar: '#toolbarDemo',
             defaultToolbar: ['filter', 'exports', 'print', {
                 title: '提示',
@@ -91,14 +107,15 @@
             }],
             cols: [[
                 {type: "checkbox", width: 50, fixed: "left"}, 
-                {field: 'id', width: 100, title: 'ID', sort: true},
+                {field: 'uid', width: 100, title: 'ID', sort: true},
                 {field: 'username', width: 100, title: '用户名'},
-                {field: 'sex', width: 80, title: '性别', sort: true},
+                {field: 'name', width: 100, title: '真实姓名'},
+                {field: 'sex', width: 60, title: '性别', sort: true},
                 {field: 'phone', width: 120, title: '手机', sort: true},
-                {field: 'mail', width: 180, title: '邮箱'},
-                {field: 'role', title: '角色', width: 80},
-                {field: 'gmt_created_time', width: 200, title: '加入时间', sort: true},
-                {field: 'number', width: 160, title: '证件号', sort: true},
+                {field: 'mail', width: 150, title: '邮箱'},
+                {field: 'roleName', title: '角色', width: 80},
+                 {field: 'gmtCreatedTime', width: 160, title: '加入时间', sort: true},
+                {field: 'number', width: 140, title: '证件号', sort: true},
                 {field: 'status', width: 80, title: '状态',templet:'#currentStatue'},
                 /*{field: 'classify', width: 80, title: '职业'},
                 {field: 'wealth', width: 135, title: '财富', sort: true},*/
@@ -106,7 +123,7 @@
                 {title: '操作', width: 120, templet: '#currentTableBar', fixed: "right", align: "center"}
             ]],
             limits: [10, 15, 20, 25, 50, 100],
-            limit: 15,
+            limit: 10,
             page: true
         });
 
@@ -117,13 +134,45 @@
                 title: '最终的搜索信息'
             });
 
+            var username = $('#username').val();
+            var name = $('#name').val();
+            var mail = $('#mail').val();
+            var number = $('#number').val();
+            var roleName = $('#roleName').val();
+            /*table.reload('currentTableId', {
+                method: 'post'
+                , where: {
+                    'data': data,
+
+                }
+                , page: {
+                    curr: 1
+                }
+            });*/
+
+            
+
+            // $.ajax({
+            //     type: "post",
+            //     url: "http://localhost:8088/dormitory/user/list?page=1&limit=10",
+            //     contentType: "application/json;charset=UTF-8",
+            //     data:JSON.stringify(data.field),
+            //     success: function (result) {
+            //         console.log(result);
+            //         var data=result.data.data
+
+            //     }
+
+            // });
+
+
             //执行搜索重载
             table.reload('currentTableId', {
                 page: {
                     curr: 1
                 }
                 , where: {
-                    searchParams: result
+                    searchParams: result.data
                 }
             }, 'data');
 
@@ -172,7 +221,7 @@
                     maxmin:true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: '/page/table/admin-edit.html',
+                    content: '/page/table/admin-edit.html?userId='+data.uid,
                 });
                 $(window).on("resize", function () {
                     layer.full(index);
@@ -181,7 +230,23 @@
             } else if (obj.event === 'delete') {
                 layer.confirm('真的删除行么', function (index) {
                     obj.del();
-                    layer.close(index);
+                    //向服务端发送删除指令
+                        $.ajax({
+                            type: "DELETE",
+                            url: "http://localhost:8088/dormitory/power/delete/" + data.uid,
+                            success: function (result) {
+                                console.log(result);
+                                // parent.location.reload();
+                            }
+
+                        });
+                        layer.msg('删除成功', {
+                            time: 800
+                        });
+                        table.reload('empTable', {
+                            url: "http://192.168.50.1:8000/admin-index.html#page/admin-list.html?mpi=m-p-i-8"
+                        })
+                        layer.close(index);
                 });
             }
         });

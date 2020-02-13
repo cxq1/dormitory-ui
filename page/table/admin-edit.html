@@ -12,45 +12,53 @@
         body {
             background-color: #ffffff;
         }
+        .layui-layer-page .layui-layer-content {
+overflow: visible !important;
+}
     </style>
 </head>
 <body>
 <div class="layui-form layuimini-form">
+    <form class="layui-form" action="" id="cusForm">
    <div class="layui-form-item">
+        <label class="layui-form-label required">昵称</label>
+        <div class="layui-input-block">
+            <input type="text" name="username" id="username" lay-verify="required" lay-reqtext="用户名不能为空" placeholder="请输入昵称" value="" class="layui-input">
+            
+        </div>
+    </div>
+    <div class="layui-form-item">
         <label class="layui-form-label required">用户名</label>
         <div class="layui-input-block">
-            <input type="text" name="username" lay-verify="required" lay-reqtext="用户名不能为空" placeholder="请输入用户名" value="" class="layui-input">
-            <tip>填写自己管理账号的名称。</tip>
+            <input type="text" name="name" id="name" lay-verify="required" lay-reqtext="用户名不能为空" placeholder="请输入用户名" value="" class="layui-input">
+           
         </div>
     </div>
      <div class="layui-form-item">
         <label class="layui-form-label required">性别</label>
         <div class="layui-input-block">
-            <input type="radio" name="sex" value="男" title="男" checked="">
-            <input type="radio" name="sex" value="女" title="女">
+            <input id="sex1" type="radio" name="sex" value="男" title="男" checked="">
+            <input id="sex2" type="radio" name="sex" value="女" title="女">
         </div>
     </div> 
     <div class="layui-form-item">
         <label class="layui-form-label required">手机</label>
         <div class="layui-input-block">
-            <input type="number" name="phone" lay-verify="required" lay-reqtext="手机不能为空" placeholder="请输入手机" value="" class="layui-input">
+            <input type="text" name="phone" id="phone" lay-verify="required" lay-reqtext="手机不能为空" placeholder="请输入手机" value="" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">邮箱</label>
         <div class="layui-input-block">
-            <input type="email" name="email" placeholder="请输入邮箱" value="" class="layui-input">
+            <input type="email" name="mail" id="mail" placeholder="请输入邮箱" value="" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">角色</label>
         <div class="layui-input-block">
-            <select name="role" lay-filter="aihao">
-                <option value=""></option>
-                <option value="0">管理员</option>
-                <option value="1" selected="">用户</option>
-                <option value="2">工作人员</option>
-                
+            
+            <select name="roleName" id="roleName" lay-filter="gridding">
+                <option  value="">请选择角色</option>
             </select>
         </div>
     </div>
@@ -63,10 +71,10 @@
     <div class="layui-form-item">
         <label class="layui-form-label">证件号</label>
         <div class="layui-input-block">
-            <input type="text" name="identity" lay-verify="identity" placeholder="" autocomplete="off" class="layui-input">
+            <input type="text" name="number" id="number" lay-verify="" placeholder="" autocomplete="off" class="layui-input">
         </div>
     </div>
-    
+    <input type="hidden" name="uid" id="uid">
     <!-- div class="layui-form-item layui-form-text">
         <label class="layui-form-label">状态</label>
         <div class="layui-input-block">
@@ -76,7 +84,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">状态 默认禁用</label>
         <div class="layui-input-block">
-            <input type="checkbox" name="close" lay-skin="switch" lay-text="ON|OFF">
+            <input type="checkbox" name="status" id="status" lay-skin="switch" lay-text="ON|OFF">
         </div>
     </div>
     <div class="layui-form-item">
@@ -85,29 +93,116 @@
         </div>
     </div>
 </div>
+</form>
 </div>
 <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script>
+     var userId = window.location.href.split("=")[1];
+
+    console.log(userId)
     layui.use(['form'], function () {
         var form = layui.form,
             layer = layui.layer,
             $ = layui.$;
+        //数据回显
+        $.ajax({
+            type: "get",
+            url: "http://localhost:8088/dormitory/user/" + userId,
+            success: function (result) {
+                // console.log(result);
+                $("#uid").val(result.data.data.uid);
+                $("#name").val(result.data.data.name);
+                $("#username").val(result.data.data.username);
+                $("#sex").val(result.data.data.sex);
+                $("#phone").val(result.data.data.phone);
+                $("#mail").val(result.data.data.mail);
+                $("#roleName").val(result.data.data.roleName);
+                $("#number").val(result.data.data.number);
+                var status= result.data.data.status;
+                if(status===0){
+                    $("#status").attr('checked','true')
+                }
+                var sex= result.data.data.sex;
+                console.log(sex)
+                if(sex==="男"){
+                    $("#sex1").attr("checked","checked");
+                    $("#sex2").removeAttr("checked");  
+                }else{
+                    $("#sex2").attr("checked","checked");
+                    $("#sex1").removeAttr("checked"); 
+                }
+                $("#roleName").val(result.data.data.roleName)
+                 form.render()
+            }
+        });
+
+        $.ajax({
+            url: "http://localhost:8088/dormitory/role/list",
+            type: "get",
+            // dataType: "json",
+            // data: {
+            //     csq: seone
+            // },
+            success: function(data) {               
+                if (data.code == 0) {
+                    $("#roleName").empty();
+                    $("#roleName").append(new Option("请选择角色", "1"));
+                    $.each(data.data, function(index, item) {
+                        $.each(item,function(t,data){
+                        // console.log(data)
+                            $('#roleName').append(new Option(data.roleName,data.roleName));
+
+                        })
+                    });
+                } else {
+                    $("#roleName").append(new Option("暂无数据", ""));
+                }
+                layui.form.render("select");
+            }
+        })
+
+    form.on('select(village)', function(data) {
+            var seone = data.value;
+
+        })
 
         //监听提交
         form.on('submit(saveBtn)', function (data) {
-            var index = layer.alert(JSON.stringify(data.field), {
-                title: '最终的提交信息'
-            }, function () {
+            console.log(data.field)
+            var st = data.field.status;
+            if(st==="on"){
+                data.field.status=0;
+            }else{
+                data.field.status=1;
+            }
+             $.ajax({
+        
+            type: 'post',
+            url: "http://localhost:8088/dormitory/user/update",
+            contentType: "application/json;charset=UTF-8",
+            data: JSON.stringify(data.field),
+            dataType: "json",
+            success: function (result) {
+                // console.log(result)
+                if (result.success === true) {
+                    layer.msg('更新成功', {
+                        time: 800,
+                        icon: 1
+                    }, function () {
+                        let index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                         parent.location.reload();
+                    });
+                } else {
+                    layer.msg('更新失败', {
+                        time: 800,
+                        icon: 2
+                    });
+                }
+            }
 
-                // 关闭弹出层
-                layer.close(index);
-
-                var iframeIndex = parent.layer.getFrameIndex(window.name);
-                parent.layer.close(iframeIndex);
-
-            });
-
-            return false;
+        });
+        return false;
         });
 
     });
