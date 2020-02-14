@@ -16,10 +16,12 @@
 </head>
 <body>
 <div class="layui-form layuimini-form">
+    <form class="layui-form" action="" id="cusForm">
+    <input type="hidden" name="id" id="id">
    <div class="layui-form-item">
         <label class="layui-form-label required">申请用户</label>
         <div class="layui-input-block">
-            <input type="text" disabled="" name="username" lay-verify="required" lay-reqtext="用户名不能为空" placeholder="请输入用户名" value="" class="layui-input">
+            <input type="text" disabled="" id="name" name="name" lay-verify="required" lay-reqtext="用户名不能为空" placeholder="请输入用户名" value="" class="layui-input">
             <!-- <tip>填写自己管理账号的名称。</tip> -->
         </div>
     </div>
@@ -33,13 +35,13 @@
     <div class="layui-form-item">
         <label class="layui-form-label required">手机</label>
         <div class="layui-input-block">
-            <input type="number" name="phone" disabled="" lay-verify="required" lay-reqtext="手机不能为空" placeholder="请输入手机" value="" class="layui-input">
+            <input type="number" id="phone" name="phone" disabled="" lay-verify="required" lay-reqtext="手机不能为空" placeholder="请输入手机" value="" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">邮箱</label>
         <div class="layui-input-block">
-            <input type="email" name="email" disabled="" placeholder="请输入邮箱" value="" class="layui-input">
+            <input type="email" name="mail" id="mail" disabled="" placeholder="请输入邮箱" value="" class="layui-input">
         </div>
     </div>
     <!-- <div class="layui-form-item">
@@ -63,59 +65,75 @@
     <div class="layui-form-item">
         <label class="layui-form-label">证件号</label>
         <div class="layui-input-block">
-            <input type="text" name="identity" disabled="" lay-verify="identity" placeholder="" autocomplete="off" class="layui-input">
+            <input type="text" name="number" id="number" disabled="" lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label required">预约时长</label>
         <div class="layui-input-block">
-            <input type="text" disabled="" name="username" lay-verify="required" lay-reqtext="" placeholder="" value="" class="layui-input">
+            <input type="text" disabled="" id="dayNum" name="dayNum" lay-verify="required" lay-reqtext="" placeholder="" value="" class="layui-input">
             <!-- <tip>填写自己管理账号的名称。</tip> -->
         </div>
     </div>
     <div class="layui-form-item">
+        <label class="layui-form-label required">房间号</label>
+        <div class="layui-input-block">
+            <input type="text" disabled="" id="rno" name="rno" lay-verify="required" lay-reqtext="" placeholder="" value="" class="layui-input">
+            <!-- <tip>填写自己管理账号的名称。</tip> -->
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">房间类型</label>
+        <div class="layui-input-block">
+            <input type="text" disabled="" id="rtype" name="rtype" lay-verify="required" lay-reqtext="" placeholder="" value="" class="layui-input">
+            <!-- <tip>填写自己管理账号的名称。</tip> -->
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">房间状况</label>
+        <div class="layui-input-block">
+            
+            <input type="text" disabled="" name="status" id="status" lay-verify="required" lay-reqtext="" placeholder="" value="" class="layui-input">
+        </div>
+    </div> 
+    <div class="layui-form-item">
         <label class="layui-form-label required">入住时间</label>
         <div class="layui-input-block">
-            <input type="text" disabled="" name="username" lay-verify="required" lay-reqtext="" placeholder="" value="" class="layui-input">
+            <input type="text" disabled="" name="rinData" id="rinData" lay-verify="required" lay-reqtext="" placeholder="" value="" class="layui-input">
             <!-- <tip>填写自己管理账号的名称。</tip> -->
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label required">申请日期</label>
         <div class="layui-input-block">
-            <input type="text" disabled="" name="username" lay-verify="required" lay-reqtext="" placeholder="" value="" class="layui-input">
+            <input type="text" disabled="" name="orderDate" id="orderDate" lay-verify="required" lay-reqtext="" placeholder="" value="" class="layui-input">
             <!-- <tip>填写自己管理账号的名称。</tip> -->
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label required">创建时间</label>
         <div class="layui-input-block">
-            <input type="text" disabled="" name="username" lay-verify="required" lay-reqtext="" placeholder="" value="" class="layui-input">
+            <input type="text" disabled="" name="gmtCreatedTime" id="gmtCreatedTime" lay-verify="required" lay-reqtext="" placeholder="" value="" class="layui-input">
             <!-- <tip>填写自己管理账号的名称。</tip> -->
         </div>
     </div>
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">申请理由</label>
         <div class="layui-input-block">
-            <textarea name="remark" disabled="" class="layui-textarea" placeholder="请输入备注信息"></textarea>
+            <textarea name="reason" id="reason" disabled="" class="layui-textarea" placeholder="请输入备注信息"></textarea>
         </div>
     </div>
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">备注信息</label>
         <div class="layui-input-block">
-            <textarea name="remark" disabled="" class="layui-textarea" placeholder="请输入备注信息"></textarea>
+            <textarea name="note" id="note" disabled="" class="layui-textarea" placeholder="请输入备注信息"></textarea>
         </div>
     </div>
-    <!-- div class="layui-form-item layui-form-text">
-        <label class="layui-form-label">状态</label>
-        <div class="layui-input-block">
-            <textarea name="remark" class="layui-textarea" placeholder="请输入备注信息"></textarea>
-        </div>
-    </div> -->
+    
     <div class="layui-form-item">
         <label class="layui-form-label">是否通过审核 默认否</label>
         <div class="layui-input-block">
-            <input type="checkbox" name="close" lay-skin="switch" lay-text="ON|OFF">
+            <input type="checkbox" name="checked" id="checked" lay-skin="switch" lay-text="审核通过|未审核">
         </div>
     </div>
     <div class="layui-form-item">
@@ -124,29 +142,106 @@
         </div>
     </div>
 </div>
+</form>
 </div>
 <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script>
+    
+    var id = window.location.href.split("=")[1];
     layui.use(['form'], function () {
         var form = layui.form,
             layer = layui.layer,
             $ = layui.$;
+        //数据回显
+        $.ajax({
+            type: "get",
+            url: "http://localhost:8088/dormitory/reserve/" + id,
+            success: function (result) {
+                // console.log(result);
+                $("#id").val(result.data.data.id);
+                $("#name").val(result.data.data.user.name);
+                $("#phone").val(result.data.data.user.phone);
+                $("#mail").val(result.data.data.user.mail);
+                $("#number").val(result.data.data.user.number);
+                $("#dayNum").val(result.data.data.dayNum);
+                $("#rinData").val(result.data.data.rinData);
+                $("#orderDate").val(result.data.data.orderDate);
+                $("#gmtCreatedTime").val(result.data.data.gmtCreatedTime);
+                $("#reason").val(result.data.data.reason);
+                $("#reason").val(result.data.data.reason);
+                $("#note").val(result.data.data.note);
+                $("#rno").val(result.data.data.roominfo.rno);
+                $("#rtype").val(result.data.data.roominfo.rtype);
+                // $("#rstatus").val(result.data.data.roominfo.rstatus);
+                var status= result.data.data.roominfo.rstatus;
+                if(status==="0"){
+                    $("#status").val("用空余")
+                    
+                }else{
+                    $("#status").val("暂无空余")
+                }
+
+                var checked= result.data.data.checked;
+                if(checked==="0"){
+                    // $("#status").val("用空余")
+                     $("#checked").attr("checked","checked");
+                }else{
+                    $("#sex1").removeAttr("checked")
+                    // $("#status").val("暂无空余")
+                }
+
+                // var sex= result.data.data.sex;
+                // // console.log(sex)
+                // if(sex==="男"){
+                //     $("#sex1").attr("checked","checked");
+                //     $("#sex2").removeAttr("checked");  
+                // }else{
+                //     $("#sex2").attr("checked","checked");
+                //     $("#sex1").removeAttr("checked"); 
+                // }
+                // $("#roleName").val(result.data.data.roleName)
+                 form.render()
+            }
+        });
 
         //监听提交
         form.on('submit(saveBtn)', function (data) {
-            var index = layer.alert(JSON.stringify(data.field), {
-                title: '最终的提交信息'
-            }, function () {
+            console.log(data.field)
+            var st = data.field.rstatus;
+            if(st="on"){
+                data.field.checked=0;
+            }else{
+                data.field.checked=1;
+            }
 
-                // 关闭弹出层
-                layer.close(index);
+             $.ajax({
+        
+            type: 'post',
+            url: "http://localhost:8088/dormitory/reserve/conform",
+            contentType: "application/json;charset=UTF-8",
+            data: JSON.stringify(data.field),
+            dataType: "json",
+            success: function (result) {
+                // console.log(result)
+                if (result.success === true) {
+                    layer.msg('更新成功', {
+                        time: 800,
+                        icon: 1
+                    }, function () {
+                        let index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                         parent.location.reload();
+                    });
+                } else {
+                    layer.msg('更新失败', {
+                        time: 800,
+                        icon: 2
+                    });
+                }
+            }
 
-                var iframeIndex = parent.layer.getFrameIndex(window.name);
-                parent.layer.close(iframeIndex);
-
-            });
-
-            return false;
+        });
+        return false;
         });
 
     });

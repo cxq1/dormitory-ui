@@ -21,7 +21,7 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">申请用户</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="username" autocomplete="off" class="layui-input">
+                                <input type="text" name="name" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
@@ -31,7 +31,7 @@
                             </div>
                         </div>
                         <div class="layui-inline">
-                            <label class="layui-form-label">证件号</label>
+                            <label class="layui-form-label">房间号</label>
                             <div class="layui-input-inline">
                                 <input type="text" name="city" autocomplete="off" class="layui-input">
                             </div>
@@ -64,8 +64,16 @@
             <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
         </script>
         <script type="text/html" id="currentStatue">
-            
-                            <span class="layui-btn layui-btn-normal layui-btn-xs">待审核</span>
+                            {{# if(d.checked == 1){ }}
+                           
+                             <span class="layui-btn layui-btn-danger layui-btn-xs">待审核</span>
+                            {{# } }}
+                            {{# if(d.checked ==0){ }}
+                          
+                            <span class="layui-btn layui-btn-normal layui-btn-xs">已通过审核</span>
+                            {{# } }}
+                            
+
         </script>
 </script>
 
@@ -81,22 +89,32 @@
 
         table.render({
             elem: '#currentTableId',
-            url: '../api/table.json',
+            url: 'http://localhost:8088/dormitory/reserve/list',
             toolbar: '',
             defaultToolbar: ['filter', 'exports', 'print', {
                 title: '提示',
                 layEvent: 'LAYTABLE_TIPS',
                 icon: 'layui-icon-tips'
             }],
+            parseData: function(res){
+              return {
+                "code": res.code, //解析接口状态
+                "msg": res.message, //解析提示文本
+                "count": res.count, //解析数据长度
+                "data": res.data.data //解析数据列表
+              };
+              
+            },
+            // console.log(data)
             cols: [[
                 {type: "checkbox", width: 50, fixed: "left"},
                 {field: 'id', width: 100, title: 'ID', sort: true},
-                {field: 'username', width: 100, title: '申请用户'},
-                {field: 'phone', width: 100, title: '预约时长'},
-                {field: 'mail', width: 180, title: '入住时间'},
-                {field: 'role', title: '申请日期', width: 180,sort: true},
-                {field: 'gmt_created_time', width: 200, title: '创建时间', sort: true},
-                {field: 'number', width: 120, title: '证件号', sort: true},
+                {field: 'name', width: 100, title: '申请用户'},
+                {field: 'rno', width: 120, title: '房间号', sort: true},
+                {field: 'dayNum', width: 100, title: '预约时长'},
+                {field: 'rinData', width: 180, title: '入住时间'},
+                {field: 'orderDate', title: '预定日期', width: 180,sort: true},
+                {field: 'gmtCreatedTime', width: 200, title: '创建时间', sort: true},     
                 {field: 'status', width: 80, title: '状态',templet:'#currentStatue',sort: true},
                 /*{field: 'classify', width: 80, title: '职业'},
                 {field: 'wealth', width: 135, title: '财富', sort: true},*/
@@ -163,13 +181,13 @@
             if (obj.event === 'edit') {
 
                 var index = layer.open({
-                    title: '编辑用户',
+                    title: '详细审核',
                     type: 2,
                     shade: 0.2,
                     maxmin:true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: '/page/table/admin-check-detail.html',
+                    content: '/page/table/admin-check-detail.html?id='+data.id,
                 });
                 $(window).on("resize", function () {
                     layer.full(index);
