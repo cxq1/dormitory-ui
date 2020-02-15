@@ -60,12 +60,16 @@
         <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
 
         <script type="text/html" id="currentTableBar">
-            <a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
+                {{# if(d.checked == 1){ }}
+                <a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
+                {{# } }}
+                            {{# if(d.checked ==0){ }}
+                            <a class="layui-btn layui-btn-xs data-count-edit"  lay-event="">编辑</a>
+                            {{# } }}
             <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
         </script>
         <script type="text/html" id="currentStatue">
                             {{# if(d.checked == 1){ }}
-                           
                              <span class="layui-btn layui-btn-danger layui-btn-xs">待审核</span>
                             {{# } }}
                             {{# if(d.checked ==0){ }}
@@ -73,7 +77,6 @@
                             <span class="layui-btn layui-btn-normal layui-btn-xs">已通过审核</span>
                             {{# } }}
                             
-
         </script>
 </script>
 
@@ -111,7 +114,7 @@
                 {field: 'id', width: 100, title: 'ID', sort: true},
                 {field: 'name', width: 100, title: '申请用户'},
                 {field: 'rno', width: 120, title: '房间号', sort: true},
-                {field: 'dayNum', width: 100, title: '预约时长'},
+                {field: 'dayNum', width: 60, title: '预约时长'},
                 {field: 'rinData', width: 180, title: '入住时间'},
                 {field: 'orderDate', title: '预定日期', width: 180,sort: true},
                 {field: 'gmtCreatedTime', width: 200, title: '创建时间', sort: true},     
