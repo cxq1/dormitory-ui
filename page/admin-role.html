@@ -178,8 +178,30 @@
                 });
                 return false;
             } else if (obj.event === 'delete') {
-                layer.confirm('真的删除行么', function (index) {
-                    obj.del();
+                layer.confirm('真的删除行么', function (index) { 
+                    
+
+                     $.ajax({
+                            type: "DELETE",
+                            url: "http://localhost:8088/dormitory/role/delete/" + data.id,
+                            success: function (result) {
+                                console.log(result);
+                                if(result.success===true){
+                                    layer.msg('删除成功', {
+                                        time: 800
+                                    });
+                                    obj.del();
+                                }else{
+                                    layer.msg('更新失败', {
+                                        time: 800
+                                       
+                                    });
+                                }
+                            }
+
+                        });
+                        
+
                     layer.close(index);
                 });
             }

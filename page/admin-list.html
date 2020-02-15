@@ -15,37 +15,37 @@
 
         <fieldset class="table-search-fieldset">
             <legend>搜索信息</legend>
-            <div style="margin: 10px 10px 10px 10px">
+            <div style="margin: 10px 10px 10px 10px" class="demoTable">
                 <form class="layui-form layui-form-pane" action="">
                     <div class="layui-form-item">
-                        <div class="layui-inline">
+                        <!-- <div class="layui-inline">
                             <label class="layui-form-label">昵称</label>
                             <div class="layui-input-inline">
                                 <input type="text" name="username" autocomplete="off" class="layui-input">
                             </div>
-                        </div>
+                        </div> -->
                         <div class="layui-inline">
-                            <label class="layui-form-label">用户名</label>
+                            <label class="layui-form-label">真实姓名</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="name" autocomplete="off" class="layui-input">
+                                <input type="text" id="searname" name="searname" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
                             <label class="layui-form-label">角色</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="roleName" autocomplete="off" class="layui-input">
+                                <input type="text" id="searroleName" name="searroleName" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
                             <label class="layui-form-label">证件号</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="number" autocomplete="off" class="layui-input">
+                                <input type="text" name="searnumber" id="searnumber" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
                             <label class="layui-form-label">邮箱</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="mail" autocomplete="off" class="layui-input">
+                                <input type="text" id="searmail" name="mail" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
@@ -165,6 +165,18 @@
             //     }
 
             // });
+            // reload:function () {
+                var name=$("#searname").val();
+                var roleName=$("#searroleName").val();
+                var number=$("#searnumber").val();
+                var mail=$("#searmail").val();
+                var data={name:name,roleName:roleName,number:number,mail:mail}
+                // json.stringify(data)
+                table.reload('currentTableId',{
+                    method:'post',
+                    where:{name:name,roleName:roleName,number:number,mail:mail}
+                });
+            // }           
 
 
             //执行搜索重载
