@@ -88,6 +88,8 @@
 
         table.render({
             type: "post",
+            xhrFields: {withCredentials: true},//解决跨域 session失效问题
+                            crossDomain: true,
             elem: '#currentTableId',
             url: 'http://localhost:8088/dormitory/user/list',
             toolRow:true,
@@ -170,7 +172,7 @@
                 var roleName=$("#searroleName").val();
                 var number=$("#searnumber").val();
                 var mail=$("#searmail").val();
-                var data={name:name,roleName:roleName,number:number,mail:mail}
+                // var data={name:name,roleName:roleName,number:number,mail:mail}
                 // json.stringify(data)
                 table.reload('currentTableId',{
                     method:'post',
@@ -246,6 +248,8 @@
                     //向服务端发送删除指令
                         $.ajax({
                             type: "DELETE",
+                            xhrFields: {withCredentials: true},//解决跨域 session失效问题
+                            crossDomain: true,
                             url: "http://localhost:8088/dormitory/power/delete/" + data.uid,
                             success: function (result) {
                                 console.log(result);

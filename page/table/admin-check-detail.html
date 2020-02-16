@@ -215,7 +215,8 @@
             }
 
              $.ajax({
-        
+             xhrFields: {withCredentials: true},//解决跨域 session失效问题
+            crossDomain: true,
             type: 'post',
             url: "http://localhost:8088/dormitory/reserve/conform",
             contentType: "application/json;charset=UTF-8",

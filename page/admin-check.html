@@ -93,6 +93,8 @@
         table.render({
             elem: '#currentTableId',
             url: 'http://localhost:8088/dormitory/reserve/list',
+            xhrFields: {withCredentials: true},//解决跨域 session失效问题
+                            crossDomain: true,
             toolbar: '',
             defaultToolbar: ['filter', 'exports', 'print', {
                 title: '提示',
@@ -211,6 +213,8 @@
                 layer.confirm('真的删除行么', function (index) {
                     $.ajax({
                             type: "DELETE",
+                            xhrFields: {withCredentials: true},//解决跨域 session失效问题
+                            crossDomain: true,
                             url: "http://localhost:8088/dormitory/reserve/delete/" + data.id,
                             success: function (result) {
                                 console.log(result);
