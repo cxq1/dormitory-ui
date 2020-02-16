@@ -72,14 +72,23 @@
 <script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script>
     layui.use(['form', 'table'], function () {
-        var $ = layui.jquery,
+        var $ = layui.jquery, 
             form = layui.form,
             table = layui.table,
             layuimini = layui.layuimini;
 
         table.render({
             elem: '#currentTableId',
-            url: '../api/table.json',
+            url: 'http://localhost:8088/dormitory/role/list',
+             parseData: function(res){
+              return {
+                "code": res.code, //解析接口状态
+                "msg": res.message, //解析提示文本
+                "count": res.count, //解析数据长度
+                "data": res.data.data //解析数据列表
+              };
+              
+            },
             toolbar: '#toolbarDemo',
             defaultToolbar: ['filter', 'exports', 'print', {
                 title: '提示',
@@ -89,9 +98,9 @@
             cols: [[
                 {type: "checkbox", width: 50, fixed: "left"},
                 {field: 'id', width: 80, title: 'ID', sort: true},
-                {field: 'rolename', width: 180, title: '角色名'},
-                {field: 'sex', width: 180, title: '拥有权限规则'},
-                {field: 'description', width: 180, title: '描述'},
+                {field: 'roleName', width: 180, title: '角色名'},
+                {field: 'roleRule', width: 180, title: '拥有权限规则'},
+                {field: 'info', width: 180, title: '描述'},
                 {field: 'status', width: 180, title: '状态',templet:'#currentStatue'},
                 {title: '操作', minWidth: 150, templet: '#currentTableBar', fixed: "right", align: "center"}
             ]],
@@ -162,7 +171,7 @@
                     maxmin:true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: '/page/table/role-edit.html',
+                    content: '/page/table/role-edit.html?roleId='+data.id,
                 });
                 $(window).on("resize", function () {
                     layer.full(index);

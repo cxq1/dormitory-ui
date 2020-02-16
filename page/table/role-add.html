@@ -16,10 +16,11 @@
 </head>
 <body>
 <div class="layui-form layuimini-form">
+    <form class="layui-form" action="" id="cusForm">
     <div class="layui-form-item">
         <label class="layui-form-label required">角色名</label>
         <div class="layui-input-block">
-            <input type="text" name="username" lay-verify="required" lay-reqtext="用户名不能为空" placeholder="请输入用户名" value="" class="layui-input">
+            <input type="text" name="roleName" id="roleName" lay-verify="required" lay-reqtext="用户名不能为空" placeholder="请输入用户名" value="" class="layui-input">
             <tip>填写角色的名称。</tip>
         </div>
     </div>
@@ -30,32 +31,32 @@
             <input type="radio" name="sex" value="女" title="女">
         </div>
     </div> -->
-    <!-- <div class="layui-form-item">
-        <label class="layui-form-label required">拥有权限规则</label>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">拥有角色规则</label>
         <div class="layui-input-block">
-            <input type="number" name="phone" lay-verify="required" lay-reqtext="手机不能为空" placeholder="请输入拥有权限规则" value="" class="layui-input">
+            <input type="text" name="roleRule" id="roleRule" lay-verify="required" lay-reqtext="手机不能为空" placeholder="请输入拥有权限规则" value="" class="layui-input">
         </div>
-    </div> -->
+    </div> 
     
  
-   <div class="layui-form-item">
-                <label class="layui-form-label">拥有权限规则</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="" placeholder="请输入" autocomplete="off" class="layui-input" id="demo" value="刘晓军,张恒" ts-selected="002,003">
-                </div>
-                <div class="layui-form-mid layui-word-aux">本地演示数据，分页选中和其他页一样，这不是BUG</div>
-            </div>
+   <!-- <div class="layui-form-item">
+        <label class="layui-form-label">拥有权限规则</label>
+        <div class="layui-input-inline">
+            <input type="text" name="" placeholder="请输入" autocomplete="off" class="layui-input" id="demo" value="刘晓军,张恒" ts-selected="002,003">
+        </div>
+        <div class="layui-form-mid layui-word-aux">本地演示数据，分页选中和其他页一样，这不是BUG</div>
+    </div> -->
     
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">描述</label>
         <div class="layui-input-block">
-            <textarea name="remark" class="layui-textarea" placeholder="请输入对角色的描述信息"></textarea>
+            <textarea name="info" id="info" class="layui-textarea" placeholder="请输入对角色的描述信息"></textarea>
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">状态 默认禁用</label>
+        <label class="layui-form-label">状态 默认启用</label>
         <div class="layui-input-block">
-            <input type="checkbox" name="close" lay-skin="switch" lay-text="ON|OFF">
+            <input type="checkbox" name="status" checked="" id="status" lay-skin="switch" lay-text="ON|OFF">
         </div>
     </div>
     <div class="layui-form-item">
@@ -63,56 +64,10 @@
             <button class="layui-btn" lay-submit lay-filter="saveBtn">确认保存</button>
         </div>
     </div>
+</form>
 </div>
 
-<!-- <pre class="layui-code">
 
-            //开始使用
-            var tableSelect = layui.tableSelect;
-            tableSelect.render({
-                elem: '#demo',  //定义输入框input对象 必填
-                checkedKey: 'id', //表格的唯一建值，非常重要，影响到选中状态 必填
-                searchKey: 'keyword',   //搜索输入框的name值 默认keyword
-                searchPlaceholder: '关键词搜索', //搜索输入框的提示文字 默认关键词搜索
-                height:'400',  //自定义高度
-                width:'900',  //自定义宽度
-                table: {    //定义表格参数，与LAYUI的TABLE模块一致，只是无需再定义表格elem
-                    url:'',
-                    cols: [[]]
-                },
-                done: function (elem, data) {
-                //选择完后的回调，包含2个返回值 elem:返回之前input对象；data:表格返回的选中的数据 []
-                //拿到data[]后 就按照业务需求做想做的事情啦~比如加个隐藏域放ID...
-                }
-            })
-
-            //默认值
-            只需要在触发input上添加 ts-selected="1,2,3" 属性即可 值需与checkedKey对应
-
-            //多条件搜索
-            tableSelect.render({
-                elem: '#demo3',
-                checkedKey: 'id',
-                searchType: 'more', //开启多条件搜索
-                searchList: [
-                    {searchKey: 'name', searchPlaceholder: '搜索用户姓名'}, //搜索条件1
-                    {searchKey: 'sex', searchPlaceholder: '搜索用户性别'},  //搜索条件2
-                ],
-                table: {
-                    url: '../api/tableSelect.json',
-                    cols: [[
-                        { type: 'radio' },
-                        { field: 'id', title: 'ID' },
-                        { field: 'username', title: '姓名' },
-                        { field: 'sex', title: '性别' }
-                    ]]
-                },
-                done: function (elem, data) {
-                //选择完后的回调，包含2个返回值 elem:返回之前input对象；data:表格返回的选中的数据 []
-                //拿到data[]后 就按照业务需求做想做的事情啦~比如加个隐藏域放ID...
-                }
-            })
-        </pre> -->
 
 <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script>
@@ -206,19 +161,45 @@
 
         //监听提交
         form.on('submit(saveBtn)', function (data) {
-            var index = layer.alert(JSON.stringify(data.field), {
-                title: '最终的提交信息'
-            }, function () {
+            
+            // var roles=data.field.roles;
+            // var rArr = roles.split(",");
+            var st=data.field.status;
+            if(st==="on"){
+                data.field.status=0;    
+            }else{
+                data.field.status=1;
+            }
+            
+            // data.field.roles=rArr;
+             console.log(data.field)
+             $.ajax({
+            type: 'post',
+            url: "http://localhost:8088/dormitory/role/add",
+            contentType: "application/json;charset=UTF-8",
+            data: JSON.stringify(data.field),
+            dataType: "json",
+            success: function (result) {
+                console.log(result)
+                if (result.success === true) {
+                    layer.msg('更新成功', {
+                        time: 800,
+                        icon: 1
+                    }, function () {
+                        let index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                        parent.location.reload();
+                    });
+                } else {
+                    layer.msg('更新失败', {
+                        time: 800,
+                        icon: 2
+                    });
+                }
+            }
 
-                // 关闭弹出层
-                layer.close(index);
-
-                var iframeIndex = parent.layer.getFrameIndex(window.name);
-                parent.layer.close(iframeIndex);
-
-            });
-
-            return false;
+        });
+        return false;
         });
 
     });

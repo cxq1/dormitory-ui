@@ -37,4 +37,4 @@ layuimini后台模板
  
 使用 git clone 项目  git clone git@github.com:cxq1/dormitory-ui.git  
 windows安装npm教程 https://www.cnblogs.com/jianguo221/p/11487532.html  
-使用   NodeJS本地搭建静态网页服务器 参考https://www.cnblogs.com/Reclouds-shangri-la/p/11274475.html 在对应的文件夹目录下启动服务  
+使用   NodeJS本地搭建静态网页服务器 参考https://blog.csdn.net/m0_37582289/article/details/78962042 在对应的文件夹目录下启动服务  

@@ -15,6 +15,7 @@
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <style>
+         #captchaPic{cursor:pointer;}
         html, body {width: 100%;height: 100%;overflow: hidden}
         body {background: #009688;}
         body:after {content:'';background-repeat:no-repeat;background-size:cover;-webkit-filter:blur(3px);-moz-filter:blur(3px);-o-filter:blur(3px);-ms-filter:blur(3px);filter:blur(3px);position:absolute;top:0;left:0;right:0;bottom:0;z-index:-1;}
@@ -41,7 +42,7 @@
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-icon layui-icon-username" for="username"></label>
-                    <input type="text" name="username" lay-verify="required|account" placeholder="用户名或者邮箱" autocomplete="off" class="layui-input" value="admin">
+                    <input type="text" name="userName" lay-verify="required|account" placeholder="用户名或者邮箱" autocomplete="off" class="layui-input" value="admin">
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-icon layui-icon-password" for="password"></label>
@@ -49,16 +50,16 @@
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-icon layui-icon-vercode" for="captcha"></label>
-                    <input type="text" name="captcha" lay-verify="required|captcha" placeholder="图形验证码" autocomplete="off" class="layui-input verification captcha" value="xszg">
+                    <input type="text" name="verifyCode" lay-verify="required|captcha" placeholder="图形验证码" autocomplete="off" class="layui-input verification captcha" value="xszg">
                     <div class="captcha-img">
-                        <img id="captchaPic" src="../images/captcha.jpg">
+                        <img οnclick="changeCode()" id="captchaPic" src="http://localhost:8088/registValidateCode">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <input type="checkbox" name="rememberMe" value="true" lay-skin="primary" title="记住密码">
                 </div>
                 <div class="layui-form-item">
-                    <button class="layui-btn layui-btn-fluid" lay-submit="" lay-filter="login">登 入</button>
+                 <button class="layui-btn layui-btn-fluid" lay-submit="" lay-filter="login">登 入</button>
                 </div>
             </form>
         </div>
@@ -68,10 +69,16 @@
 <script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script src="../lib/jq-module/jquery.particleground.min.js" charset="utf-8"></script>
 <script>
+   function changeCode(){
+      document.getElementById("captchaPic").src="http://localhost:8088/createImg";
+   }
+</script>
+<script>
+
     layui.use(['form'], function () {
         var form = layui.form,
             layer = layui.layer;
-
+            $ = layui.$;
         // 登录过期的时候，跳出ifram框架
         if (top.location != self.location) top.location = self.location;
 
@@ -86,6 +93,7 @@
         // 进行登录操作
         form.on('submit(login)', function (data) {
             data = data.field;
+            console.log(data)
             if (data.username == '') {
                 layer.msg('用户名不能为空');
                 return false;
@@ -98,9 +106,32 @@
                 layer.msg('验证码不能为空');
                 return false;
             }
-            layer.msg('登录成功', function () {
-                window.location = '/admin-index.html';
-            });
+
+             $.ajax({
+        
+            type: 'post',
+            url: "http://localhost:8088/login1",
+            xhrFields: {withCredentials: true},//解决跨域 session失效问题
+            crossDomain: true,
+            contentType: "application/json;charset=UTF-8",
+            data: JSON.stringify(data),
+            dataType: "json",
+            success: function (result) {
+                // console.log(result)
+                if (result.success === true) {
+                    layer.msg('登录成功', function () {
+                    window.location = '/admin-index.html';
+                });
+                } else {
+                    layer.msg('登录失败', {
+                        time: 800,
+                        icon: 2
+                    });
+                }
+            }
+
+        });
+            
             return false;
         });
     });

@@ -16,10 +16,13 @@
 </head>
 <body>
 <div class="layui-form layuimini-form">
+
+    <form class="layui-form" action="" id="cusForm">
+        <input type="hidden" name="id" id="id">
    <div class="layui-form-item">
         <label class="layui-form-label required">角色名</label>
         <div class="layui-input-block">
-            <input type="text" name="username" lay-verify="required" lay-reqtext="用户名不能为空" placeholder="请输入用户名" value="" class="layui-input">
+            <input type="text" name="roleName" id="roleName" lay-verify="required" lay-reqtext="用户名不能为空" placeholder="请输入角色名" value="" class="layui-input">
             <tip>填写角色的名称。</tip>
         </div>
     </div>
@@ -31,9 +34,9 @@
         </div>
     </div> -->
     <div class="layui-form-item">
-        <label class="layui-form-label required">拥有权限规则</label>
+        <label class="layui-form-label required">拥有角色规则</label>
         <div class="layui-input-block">
-            <input type="number" name="phone" lay-verify="required" lay-reqtext="手机不能为空" placeholder="请输入拥有权限规则" value="" class="layui-input">
+            <input type="text" name="roleRule" id="roleRule" lay-verify="required" lay-reqtext="规则不能为空" placeholder="请输入拥有权限规则" value="" class="layui-input">
         </div>
     </div>
     
@@ -55,24 +58,24 @@
             <input type="text" name="work" placeholder="请输入职业" value="" class="layui-input">
         </div>
     </div> -->
-   <div class="layui-form-item">
-                <label class="layui-form-label">多选</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="" placeholder="请输入" autocomplete="off" class="layui-input" id="demo" value="刘晓军,张恒" ts-selected="002,003">
-                </div>
-                <div class="layui-form-mid layui-word-aux">本地演示数据，分页选中和其他页一样，这不是BUG</div>
-            </div>
+   <!-- <div class="layui-form-item">
+        <label class="layui-form-label">拥有权限规则</label>
+        <div class="layui-input-inline">
+            <input type="text" name="powers"  placeholder="请输入" autocomplete="off" class="layui-input" id="demo" style="width: 312px;" value="" ts-selected="">
+        </div>
+        
+    </div> -->
     
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">描述</label>
         <div class="layui-input-block">
-            <textarea name="remark" class="layui-textarea" placeholder="请输入对角色的描述信息"></textarea>
+            <textarea name="info" id="info" class="layui-textarea" placeholder="请输入对角色的描述信息"></textarea>
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">状态 默认禁用</label>
+        <label class="layui-form-label">状态 启用</label>
         <div class="layui-input-block">
-            <input type="checkbox" name="close" lay-skin="switch" lay-text="ON|OFF">
+            <input type="checkbox" checked="" name="status" id="status" lay-skin="switch" lay-text="ON|OFF">
         </div>
     </div>
     <div class="layui-form-item">
@@ -81,6 +84,7 @@
         </div>
     </div>
 </div>
+</form>
 </div>
 <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script>
@@ -96,18 +100,27 @@
             checkedKey: 'id',
             searchPlaceholder: '自定义文字和name',
             table: {
-                url: '../../api/tableSelect.json',
+                url: 'http://localhost:8088/dormitory/power/list',
+                    parseData: function(res){
+                  return {
+                    "code": res.code, //解析接口状态
+                    "msg": res.message, //解析提示文本
+                    "count": res.count, //解析数据长度
+                    "data": res.data.data //解析数据列表
+                  };
+                  
+                },
                 cols: [[
                     { type: 'checkbox' },
                     { field: 'id', title: 'ID', width: 100 },
-                    { field: 'username', title: '姓名', width: 300 },
-                    { field: 'sex', title: '性别', width: 100 }
+                    { field: 'powerRule', title: '权限规则', width: 300 },
+                    { field: 'powerName', title: '权限名', width: 100 }
                 ]]
             },
             done: function (elem, data) {
                 var NEWJSON = []
                 layui.each(data.data, function (index, item) {
-                    NEWJSON.push(item.username)
+                    NEWJSON.push(item.powerName)
                 })
                 elem.val(NEWJSON.join(","))
             }
@@ -167,26 +180,76 @@
     });
 </script>
 <script>
+
+    var ruleId = window.location.href.split("=")[1];
+
+    console.log(ruleId)
+
     layui.use(['form'], function () {
         var form = layui.form,
             layer = layui.layer,
             $ = layui.$;
 
-        //监听提交
+            //数据回显
+        $.ajax({
+            type: "get",
+            url: "http://localhost:8088/dormitory/role/" + ruleId,
+            success: function (result) {
+                // console.log(result);
+                $("#id").val(result.data.data.id);
+
+                $("#roleRule").val(result.data.data.roleRule);
+                $("#roleName").val(result.data.data.roleName);
+                $("#info").val(result.data.data.info);
+                $("#demo").val(result.data.data.powers);
+                var status= $("#status").val(result.data.data.status);
+                if(status===0){
+                    $("#status").attr('checked','true')
+                }else{
+                    $("#status").removeAttr("checked")
+                }
+                form.render()
+            }
+        });
+       //监听提交
         form.on('submit(saveBtn)', function (data) {
-            var index = layer.alert(JSON.stringify(data.field), {
-                title: '最终的提交信息'
-            }, function () {
+            // var powers=data.field.powers;
+            // var pArr = powers.split(",");
+            
+            // data.field.powers=pArr;
+            var st = data.field.status;
+            if(st==="on"){
+                data.field.status=0;
+            }else{
+                data.field.status=1;
+            }
+            console.log(data.field)  
+             $.ajax({
+            type: 'post',
+            url: "http://localhost:8088/dormitory/role/update",
+            contentType: "application/json;charset=UTF-8",
+            data: JSON.stringify(data.field),
+            dataType: "json",
+            success: function (result) {
+                 // console.log(data)
+                if (result.success === true) {
+                    layer.msg('更新成功', {
+                        time: 800,
+                        icon: 1
+                    }, function () {
+                        let index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                    });
+                } else {
+                    layer.msg('更新失败', {
+                        time: 800,
+                        icon: 2
+                    });
+                }
+            }
 
-                // 关闭弹出层
-                layer.close(index);
-
-                var iframeIndex = parent.layer.getFrameIndex(window.name);
-                parent.layer.close(iframeIndex);
-
-            });
-
-            return false;
+        });
+        return false;
         });
 
     });
