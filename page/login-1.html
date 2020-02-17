@@ -51,8 +51,10 @@
                 <div class="layui-form-item">
                     <label class="layui-icon layui-icon-vercode" for="captcha"></label>
                     <input type="text" name="verifyCode" lay-verify="required|captcha" placeholder="图形验证码" autocomplete="off" class="layui-input verification captcha" value="xszg">
+
                     <div class="captcha-img">
-                        <img οnclick="changeCode()" id="captchaPic" src="http://localhost:8088/registValidateCode">
+                        <img  id="captchaPic" src="http://localhost:8088/registValidateCode">
+                        <a href="javascript:void(0);" id="changeCode">看不清，换一张</a>
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -69,9 +71,7 @@
 <script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script src="../lib/jq-module/jquery.particleground.min.js" charset="utf-8"></script>
 <script>
-   function changeCode(){
-      document.getElementById("captchaPic").src="http://localhost:8088/createImg";
-   }
+
 </script>
 <script>
 
@@ -89,7 +89,10 @@
                 lineColor:'#5cbdaa'
             });
         });
-
+         $(document).on('click','#changeCode',function(){
+            var img=document.getElementById("captchaPic");
+            img.src="http://localhost:8088/registValidateCode" 
+        });
         // 进行登录操作
         form.on('submit(login)', function (data) {
             data = data.field;
@@ -110,20 +113,20 @@
              $.ajax({
         
             type: 'post',
-            url: "http://localhost:8088/login1",
+            url: "http://localhost:8088/admin/login1",
             xhrFields: {withCredentials: true},//解决跨域 session失效问题
             crossDomain: true,
             contentType: "application/json;charset=UTF-8",
             data: JSON.stringify(data),
             dataType: "json",
             success: function (result) {
-                // console.log(result)
+                console.log(result)
                 if (result.success === true) {
-                    layer.msg('登录成功', function () {
+                    layer.msg(result.message, function () {
                     window.location = '/admin-index.html';
                 });
                 } else {
-                    layer.msg('登录失败', {
+                    layer.msg(result.message, {
                         time: 800,
                         icon: 2
                     });

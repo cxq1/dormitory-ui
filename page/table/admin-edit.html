@@ -58,7 +58,7 @@ overflow: visible !important;
         <div class="layui-input-block">
             
             <select name="roleName" id="roleName" lay-filter="gridding">
-                <option  value="">请选择角色</option>
+                <!-- <option  value="">请选择角色</option> -->
             </select>
         </div>
     </div>
@@ -116,7 +116,7 @@ overflow: visible !important;
                 $("#sex").val(result.data.data.sex);
                 $("#phone").val(result.data.data.phone);
                 $("#mail").val(result.data.data.mail);
-                $("#roleName").val(result.data.data.roleName);
+                // $("#roleName").val(result.data.data.roleName);
                 $("#number").val(result.data.data.number);
                 var status= result.data.data.status;
                 if(status===0){
@@ -136,6 +136,7 @@ overflow: visible !important;
                 }
                 $("#roleName").val(result.data.data.roleName)
                  form.render()
+
             }
         });
 
@@ -151,8 +152,9 @@ overflow: visible !important;
                     $("#roleName").empty();
                     $("#roleName").append(new Option("请选择角色", "1"));
                     $.each(data.data, function(index, item) {
+
                         $.each(item,function(t,data){
-                        // console.log(data)
+                        // console.log(t)
                             $('#roleName').append(new Option(data.roleName,data.roleName));
 
                         })
@@ -161,7 +163,9 @@ overflow: visible !important;
                     $("#roleName").append(new Option("暂无数据", ""));
                 }
                 layui.form.render("select");
+                 form.render()
             }
+            // layui.form.render("select");
         })
 
     form.on('select(village)', function(data) {
