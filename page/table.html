@@ -21,25 +21,25 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">房间类型</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="dor-type" autocomplete="off" class="layui-input">
+                                <input type="text" name="rtype" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
                             <label class="layui-form-label">房间价格</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="dor-price" autocomplete="off" class="layui-input">
+                                <input type="text" name="rprice" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
                             <label class="layui-form-label">房间号码</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="dor-number" autocomplete="off" class="layui-input">
+                                <input type="text" name="rno" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
                             <label class="layui-form-label">房间状态</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="dor-state" autocomplete="off" class="layui-input">
+                                <input type="text" name="rstatus" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
@@ -52,8 +52,8 @@
 
         <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
-                <button class="layui-btn layui-btn-sm data-add-btn"> 添加用户 </button>
-                <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn"> 删除用户 </button>
+                <button class="layui-btn layui-btn-sm data-add-btn"> 添加房间信息 </button>
+                <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn"> 删除房间信息 </button>
             </div>
         </script>
 
@@ -75,8 +75,21 @@
             layuimini = layui.layuimini;
 
         table.render({
-            elem: '#currentTableId',
-            url: '../api/table.json',
+            type: "get",
+            xhrFields: {withCredentials: true},//解决跨域 session失效问题
+                            crossDomain: true,
+            elem:'#currentTabletId',
+            url: 'http://localhost:8088/dormitory/roominfo/moreConditionPageList',
+            toolRow:true,
+            parseData: function(res){
+              return {
+                "code": res.code, //解析接口状态
+                "msg": res.message, //解析提示文本
+                "count": res.data.total, //解析数据长度
+                "data": res.data.items //解析数据列表
+              };
+              
+            },
             toolbar: '#toolbarDemo',
             defaultToolbar: ['filter', 'exports', 'print', {
                 title: '提示',
@@ -86,12 +99,12 @@
             cols: [[
                 {type: "checkbox", width: 50, fixed: "left"},
                 {field: 'id', width: 120, title: 'id', sort: true},
-                {field: 'dor-type', width: 120, title: '房间类型', sort: true},
-                {field: 'dor-price', width: 120, title: '房间价格'},
-                {field: 'dor-number', width: 120, title: '房间号码', sort: true},
-                {field: 'dor-location', width: 200, title: '房间位置'},
-                {field: 'dor-state', width: 100,title: '房间状态'},
-                {field: 'dor-remark', width: 200, title: '房间备注', sort: true},
+                {field: 'rtype', width: 120, title: '房间类型', sort: true},
+                {field: 'rprice', width: 120, title: '房间价格'},
+                {field: 'rno', width: 120, title: '房间号码', sort: true},
+                {field: 'rposition', width: 200, title: '房间位置'},
+                {field: 'rstatus', width: 100,title: '房间状态'},
+                {field: 'rnote', width: 200, title: '房间备注', sort: true},
                 {title: '操作', minWidth: 50, templet: '#currentTableBar', fixed: "right", align: "center"}
             ]],
             limits: [10, 15, 20, 25, 50, 100],
