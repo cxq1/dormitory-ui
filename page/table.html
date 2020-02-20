@@ -75,18 +75,18 @@
             layuimini = layui.layuimini;
 
         table.render({
-            type: "get",
+            type: "post",
             xhrFields: {withCredentials: true},//解决跨域 session失效问题
                             crossDomain: true,
-            elem:'#currentTabletId',
+            elem: '#currentTableId',
             url: 'http://localhost:8088/dormitory/roominfo/moreConditionPageList',
             toolRow:true,
             parseData: function(res){
               return {
                 "code": res.code, //解析接口状态
                 "msg": res.message, //解析提示文本
-                "count": res.data.total, //解析数据长度
-                "data": res.data.items //解析数据列表
+                "count": res.data.count, //解析数据长度
+                "data": res.data.data //解析数据列表
               };
               
             },
