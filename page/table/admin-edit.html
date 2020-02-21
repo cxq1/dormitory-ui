@@ -105,8 +105,13 @@ overflow: visible !important;
             layer = layui.layer,
             $ = layui.$;
         //数据回显
+         var cate = layui.data('test');
         $.ajax({
             type: "get",
+             headers: {
+               'Authorization': cate.Authorization,
+               
+              },
             url: "http://localhost:8088/dormitory/user/" + userId,
             success: function (result) {
                 // console.log(result);
@@ -147,6 +152,10 @@ overflow: visible !important;
             // data: {
             //     csq: seone
             // },
+            headers: {
+               'Authorization': cate.Authorization,
+               
+              },
             success: function(data) {               
                 if (data.code == 0) {
                     $("#roleName").empty();
@@ -189,6 +198,10 @@ overflow: visible !important;
             contentType: "application/json;charset=UTF-8",
             data: JSON.stringify(data.field),
             dataType: "json",
+            headers: {
+               'Authorization': cate.Authorization,
+               
+              },
             success: function (result) {
                 // console.log(result)
                 if (result.success === true) {

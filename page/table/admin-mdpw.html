@@ -68,7 +68,7 @@ overflow: visible !important;
 <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script>
      var userId = window.location.href.split("=")[1];
-
+      var cate = layui.data('test');
     console.log(userId)
     layui.use(['form'], function () {
         var form = layui.form,
@@ -77,6 +77,10 @@ overflow: visible !important;
         //数据回显
         $.ajax({
             type: "get",
+            headers: {
+               'Authorization': cate.Authorization,
+               
+              },
             url: "http://localhost:8088/dormitory/user/" + userId,
             success: function (result) {
                 // console.log(result);
@@ -112,6 +116,10 @@ overflow: visible !important;
         $.ajax({
             url: "http://localhost:8088/dormitory/role/list",
             type: "get",
+            headers: {
+               'Authorization': cate.Authorization,
+               
+              },
             // dataType: "json",
             // data: {
             //     csq: seone
@@ -149,7 +157,10 @@ overflow: visible !important;
             //     data.field.status=1;
             // }
              $.ajax({
-        
+            headers: {
+               'Authorization': cate.Authorization,
+               
+              },
             type: 'post',
             url: "http://localhost:8088/dormitory/user/mdpw",
             contentType: "application/json;charset=UTF-8",
