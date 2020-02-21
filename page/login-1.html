@@ -126,6 +126,8 @@
                     window.location = '/admin-index.html';
                 });
                 } else {
+                    var img=document.getElementById("captchaPic");
+                    img.src="http://localhost:8088/registValidateCode" 
                     layer.msg(result.message, {
                         time: 800,
                         icon: 2
