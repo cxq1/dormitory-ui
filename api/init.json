@@ -45,7 +45,7 @@
         },
         {
           "title": "菜单管理",
-          "href": "page/menu.html",
+          "href": "page/admin-menu.html",
           "icon": "fa fa-window-maximize",
           "target": "_self"
         },

@@ -25,7 +25,7 @@
           },
           {
             "title": "住房记录",
-            "href": "page/menu.html",
+            "href": "page/user-menu.html",
             "icon": "fa fa-window-maximize",
             "target": "_self"
           },

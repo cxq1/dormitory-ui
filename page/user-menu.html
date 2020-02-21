@@ -13,39 +13,33 @@
 <div class="layuimini-container">
     <div class="layuimini-main">
 
-        <fieldset class="table-search-fieldset">
+       <!--  <fieldset class="table-search-fieldset">
             <legend>搜索信息</legend>
-            <div style="margin: 10px 10px 10px 10px" class="demoTable">
+            <div style="margin: 10px 10px 10px 10px">
                 <form class="layui-form layui-form-pane" action="">
                     <div class="layui-form-item">
-                        <!-- <div class="layui-inline">
-                            <label class="layui-form-label">昵称</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="username" autocomplete="off" class="layui-input">
-                            </div>
-                        </div> -->
                         <div class="layui-inline">
-                            <label class="layui-form-label">真实姓名</label>
+                            <label class="layui-form-label">房间类型</label>
                             <div class="layui-input-inline">
-                                <input type="text" id="searname" name="searname" autocomplete="off" class="layui-input">
+                                <input type="text" name="dor-type" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
-                            <label class="layui-form-label">角色</label>
+                            <label class="layui-form-label">房间价格</label>
                             <div class="layui-input-inline">
-                                <input type="text" id="searroleName" name="searroleName" autocomplete="off" class="layui-input">
+                                <input type="text" name="dor-price" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
-                            <label class="layui-form-label">证件号</label>
+                            <label class="layui-form-label">房间号码</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="searnumber" id="searnumber" autocomplete="off" class="layui-input">
+                                <input type="text" name="dor-number" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
-                            <label class="layui-form-label">邮箱</label>
+                            <label class="layui-form-label">房间状态</label>
                             <div class="layui-input-inline">
-                                <input type="text" id="searmail" name="mail" autocomplete="off" class="layui-input">
+                                <input type="text" name="dor-state" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
@@ -54,27 +48,21 @@
                     </div>
                 </form>
             </div>
-        </fieldset>
+        </fieldset> -->
 
         <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
-                <button class="layui-btn layui-btn-sm data-add-btn"> 添加用户 </button>
-                <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn"> 删除用户 </button>
+                <!-- <button class="layui-btn layui-btn-sm data-add-btn"> 添加用户 </button>
+                <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn"> 删除用户 </button> -->
             </div>
         </script>
 
         <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
 
         <script type="text/html" id="currentTableBar">
-        <a class="layui-btn layui-btn-xs data-count-edit" lay-event="mdpw">修改密码</a>
-            <a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
+            <!-- <a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit">编辑</a> -->
             <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
         </script>
-        <script type="text/html" id="currentStatue">
-            
-                            <span class="layui-btn layui-btn-normal layui-btn-xs">已启用</span>
-        </script>
-</script>
 
     </div>
 </div>
@@ -85,14 +73,21 @@
             form = layui.form,
             table = layui.table,
             layuimini = layui.layuimini;
-
         table.render({
-            type: "post",
+            // elem: '#currentTableId',
+            // url: '../api/menus.json',
+            // toolbar: '#toolbarDemo',
+            // defaultToolbar: ['filter', 'exports', 'print', {
+            //     title: '提示',
+            //     layEvent: 'LAYTABLE_TIPS',
+            //     icon: 'layui-icon-tips'
+            // }],
+            type: "get",
             xhrFields: {withCredentials: true},//解决跨域 session失效问题
                             crossDomain: true,
             elem: '#currentTableId',
-            url: 'http://localhost:8088/dormitory/user/list',
             toolRow:true,
+            url: 'http://localhost:8088/dormitory/roominfo/list/',
             parseData: function(res){
               return {
                 "code": res.code, //解析接口状态
@@ -109,21 +104,15 @@
                 icon: 'layui-icon-tips'
             }],
             cols: [[
-                {type: "checkbox", width: 50, fixed: "left"}, 
-                // {field: 'uid', width: 100, title: 'ID', sort: true},
-                {field: 'username', width: 100, title: '用户名'},
-                {field: 'name', width: 100, title: '真实姓名'},
-                {field: 'sex', width: 60, title: '性别', sort: true},
-                {field: 'phone', width: 120, title: '手机', sort: true},
-                {field: 'mail', width: 150, title: '邮箱'},
-                {field: 'roleName', title: '角色', width: 80},
-                 {field: 'gmtCreatedTime', width: 160, title: '加入时间', sort: true},
-                {field: 'number', width: 140, title: '证件号', sort: true},
-                {field: 'status', width: 80, title: '状态',templet:'#currentStatue'},
-                /*{field: 'classify', width: 80, title: '职业'},
-                {field: 'wealth', width: 135, title: '财富', sort: true},*/
-
-                {title: '操作', width: 220, templet: '#currentTableBar', fixed: "right", align: "center"}
+                {type: "checkbox", width: 50, fixed: "left"},
+                // {field: 'id', width: 120, title: 'id', sort: true},
+                {field: 'rinDate', width: 200, title: '入住日期',sort: true},
+                {field: 'dayNum', width: 200, title: '入住天数'},
+                {field: 'rtype', width: 200, title: '房间类型', sort: true},
+                {field: 'rprice', width: 180, title: '房间价格'},
+                {field: 'sum', width: 180, title: '住房总价'},
+                {field: 'rno', width: 180, title: '房间号码', sort: true},
+                {title: '操作', minWidth: 50, templet: '#currentTableBar', fixed: "right", align: "center"}
             ]],
             limits: [10, 15, 20, 25, 50, 100],
             limit: 10,
@@ -137,57 +126,13 @@
                 title: '最终的搜索信息'
             });
 
-            var username = $('#username').val();
-            var name = $('#name').val();
-            var mail = $('#mail').val();
-            var number = $('#number').val();
-            var roleName = $('#roleName').val();
-            /*table.reload('currentTableId', {
-                method: 'post'
-                , where: {
-                    'data': data,
-
-                }
-                , page: {
-                    curr: 1
-                }
-            });*/
-
-            
-
-            // $.ajax({
-            //     type: "post",
-            //     url: "http://localhost:8088/dormitory/user/list?page=1&limit=10",
-            //     contentType: "application/json;charset=UTF-8",
-            //     data:JSON.stringify(data.field),
-            //     success: function (result) {
-            //         console.log(result);
-            //         var data=result.data.data
-
-            //     }
-
-            // });
-            // reload:function () {
-                var name=$("#searname").val();
-                var roleName=$("#searroleName").val();
-                var number=$("#searnumber").val();
-                var mail=$("#searmail").val();
-                // var data={name:name,roleName:roleName,number:number,mail:mail}
-                // json.stringify(data)
-                table.reload('currentTableId',{
-                    method:'post',
-                    where:{name:name,roleName:roleName,number:number,mail:mail}
-                });
-            // }           
-
-
             //执行搜索重载
             table.reload('currentTableId', {
                 page: {
                     curr: 1
                 }
                 , where: {
-                    searchParams: result.data
+                    searchParams: result
                 }
             }, 'data');
 
@@ -204,7 +149,7 @@
                 maxmin:true,
                 shadeClose: true,
                 area: ['100%', '100%'],
-                content: '/page/table/admin-add.html',
+                content: '/page/table/add.html',
             });
             $(window).on("resize", function () {
                 layer.full(index);
@@ -236,7 +181,7 @@
                     maxmin:true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: '/page/table/admin-edit.html?userId='+data.uid,
+                    content: '/page/table/edit.html',
                 });
                 $(window).on("resize", function () {
                     layer.full(index);
@@ -246,13 +191,11 @@
                 layer.confirm('真的删除行么', function (index) {
                     obj.del();
                     //向服务端发送删除指令
-                        $.ajax({
+                    $.ajax({
                             type: "DELETE",
-                            xhrFields: {withCredentials: true},//解决跨域 session失效问题
-                            crossDomain: true,
-                            url: "http://localhost:8088/dormitory/power/delete/" + data.uid,
+                            url: "http://localhost:8088/dormitory/roomcost/delete/",
                             success: function (result) {
-                                console.log(data);
+                                console.log(result);
                                 // parent.location.reload();
                             }
 
@@ -261,24 +204,10 @@
                             time: 800
                         });
                         table.reload('empTable', {
-                            url: "http://192.168.50.1:8000/admin-index.html#page/admin-list.html?mpi=m-p-i-8"
+                            url: "http://192.168.50.1:8000/admin-index.html#page/user-menu.html?mpi=m-p-i-2"
                         })
                         layer.close(index);
                 });
-            }else if(obj.event==='mdpw'){
-                var index = layer.open({
-                    title: '修改密码',
-                    type: 2,
-                    shade: 0.2,
-                    maxmin:true,
-                    shadeClose: true,
-                    area: ['100%', '100%'],
-                    content: '/page/table/admin-mdpw.html?userId='+data.uid,
-                });
-                $(window).on("resize", function () {
-                    layer.full(index);
-                });
-                return false;
             }
         });
 

@@ -75,8 +75,28 @@
             layuimini = layui.layuimini;
 
         table.render({
+            // elem: '#currentTableId',
+            // url: '../api/menus.json',
+            // toolbar: '#toolbarDemo',
+            // defaultToolbar: ['filter', 'exports', 'print', {
+            //     title: '提示',
+            //     layEvent: 'LAYTABLE_TIPS',
+            //     icon: 'layui-icon-tips'
+            // }],
+            type: "get",
+            xhrFields: {withCredentials: true},//解决跨域 session失效问题
+                            crossDomain: true,
             elem: '#currentTableId',
-            url: '../api/menus.json',
+            url: 'http://localhost:8088/dormitory/roominfo/admin/list',
+            toolRow:true,
+            parseData: function(res){
+              return {
+                "code": res.code, //解析接口状态
+                "msg": res.message, //解析提示文本
+                "count": res.data.count, //解析数据长度
+                "data": res.data.data //解析数据列表
+              };
+            },
             toolbar: '#toolbarDemo',
             defaultToolbar: ['filter', 'exports', 'print', {
                 title: '提示',
@@ -85,13 +105,14 @@
             }],
             cols: [[
                 {type: "checkbox", width: 50, fixed: "left"},
-                {field: 'id', width: 120, title: 'id', sort: true},
-                {field: 'indor-time', width: 200, title: '入住日期'},
-                {field: 'outdor-time', width: 200, title: '离开日期'},
-                {field: 'dor-type', width: 200, title: '房间类型', sort: true},
-                {field: 'dor-price', width: 120, title: '房间价格'},
-                {field: 'dor-sum', width: 120, title: '住房总价'},
-                {field: 'dor-number', width: 120, title: '房间号码', sort: true},
+                {field: 'uid', width: 120, title: 'id', sort: true},
+                {field: 'name', width: 120, title: '姓名', sort: true},
+                {field: 'rinDate', width: 150, title: '入住日期',sort: true},
+                {field: 'dayNum', width: 150, title: '住的天数',sort: true},
+                {field: 'rtype', width: 150, title: '房间类型', sort: true},
+                {field: 'rprice', width: 120, title: '房间价格',sort: true},
+                {field: 'sum', width: 120, title: '住房总价',sort: true},
+                {field: 'rno', width: 120, title: '房间号码', sort: true},
                 {title: '操作', minWidth: 50, templet: '#currentTableBar', fixed: "right", align: "center"}
             ]],
             limits: [10, 15, 20, 25, 50, 100],
@@ -152,6 +173,7 @@
 
         table.on('tool(currentTableFilter)', function (obj) {
             var data = obj.data;
+            // console.log(data)
             if (obj.event === 'edit') {
 
                 var index = layer.open({
@@ -161,7 +183,7 @@
                     maxmin:true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: '/page/table/edit.html',
+                    content: '/page/table/admin-edit.html?userId='+data.id,
                 });
                 $(window).on("resize", function () {
                     layer.full(index);
@@ -170,7 +192,23 @@
             } else if (obj.event === 'delete') {
                 layer.confirm('真的删除行么', function (index) {
                     obj.del();
-                    layer.close(index);
+                    //向服务端发送删除指令
+                    //向服务端发送删除指令
+                    $.ajax({
+                            type: "DELETE",
+                            url: "http://localhost:8088/dormitory/roominfo/admin/delete/"+data.id,
+                            success: function (result) {
+                                console.log(result);
+                            }
+
+                        });
+                        layer.msg('删除成功', {
+                            time: 800
+                        });
+                        table.reload('empTable', {
+                            url: "http://192.168.50.1:8000/admin-index.html#page/admin-menu.html?mpi=m-p-i-4"
+                        })
+                        layer.close(index);
                 });
             }
         });
