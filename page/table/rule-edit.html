@@ -100,7 +100,7 @@
             table = layui.table,
             form = layui.form,
             tableSelect = layui.tableSelect;
-
+            var cate = layui.data('test');
         tableSelect.render({
             elem: '#roleName',
             searchKey: 'my',
@@ -108,6 +108,10 @@
             searchPlaceholder: '自定义文字和name',
             table: {
                 url: 'http://localhost:8088/dormitory/role/list',
+                headers: {
+               'Authorization': cate.Authorization,
+               
+              },
                  parseData: function(res){
                   return {
                     "code": res.code, //解析接口状态
@@ -196,6 +200,10 @@
             $ = layui.$;
         //数据回显
         $.ajax({
+            headers: {
+               'Authorization': cate.Authorization,
+               
+              },
         type: "get",
         url: "http://localhost:8088/dormitory/power/" + ruleId,
         success: function (result) {
@@ -220,6 +228,10 @@
             
              $.ajax({
             type: 'post',
+            headers: {
+               'Authorization': cate.Authorization,
+               
+              },
             url: "http://localhost:8088/dormitory/power/updatePower",
             contentType: "application/json;charset=UTF-8",
             data: JSON.stringify(data.field),

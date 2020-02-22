@@ -158,7 +158,8 @@
         var form = layui.form,
             layer = layui.layer,
             $ = layui.$;
-
+            var cate = layui.data('test');
+            // console.log(cate.Authorization)
         //监听提交
         form.on('submit(saveBtn)', function (data) {
             
@@ -175,10 +176,15 @@
              console.log(data.field)
              $.ajax({
             type: 'post',
+            headers: {
+               'Authorization': cate.Authorization,
+               
+              },
             url: "http://localhost:8088/dormitory/role/add",
             contentType: "application/json;charset=UTF-8",
             data: JSON.stringify(data.field),
             dataType: "json",
+
             success: function (result) {
                 console.log(result)
                 if (result.success === true) {

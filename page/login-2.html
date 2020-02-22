@@ -108,10 +108,14 @@
             crossDomain: true,
             contentType: "application/json;charset=UTF-8",
             data: JSON.stringify(data),
-            dataType: "json",
+            dataType: "json", 
             success: function (result) {
                 // console.log(result)
                 if (result.success === true) {
+                    layui.data('test', {
+                            key: "Authorization",
+                            value: result.data.token
+                        });
                     layer.msg(result.message, function () {
                     window.location = '/user-index.html';
                 });

@@ -94,9 +94,9 @@
             xhrFields: {withCredentials: true},//解决跨域 session失效问题
             crossDomain: true,
             //增加请求头
-            headers: {
-                'Authorization': cate.Authorization
-                },   
+                headers: {
+                    'Authorization': cate.Authorization
+                    },   
             elem: '#currentTableId',
             url: 'http://localhost:8088/dormitory/user/list',
             toolRow:true,
@@ -255,6 +255,10 @@
                     //向服务端发送删除指令
                         $.ajax({
                             type: "DELETE",
+                            headers: {
+                           'Authorization': cate.Authorization,
+                           
+                          },
                             xhrFields: {withCredentials: true},//解决跨域 session失效问题
                             crossDomain: true,
                             url: "http://localhost:8088/dormitory/power/delete/" + data.uid,
