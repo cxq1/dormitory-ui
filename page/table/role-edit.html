@@ -93,8 +93,12 @@
             table = layui.table,
             form = layui.form,
             tableSelect = layui.tableSelect;
-
+        var cate = layui.data('test');
         tableSelect.render({
+            headers: {
+               'Authorization': cate.Authorization,
+               
+              },
             elem: '#demo',
             searchKey: 'my',
             checkedKey: 'id',
