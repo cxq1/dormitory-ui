@@ -104,10 +104,14 @@
         var form = layui.form,
             layer = layui.layer,
             $ = layui.$;
-
+            var cate = layui.data('test');
             $.ajax({
             url: "http://localhost:8088/dormitory/role/list",
             type: "get",
+            headers: {
+               'Authorization': cate.Authorization,
+               
+              },
             // dataType: "json",
             // data: {
             //     csq: seone
@@ -146,6 +150,10 @@
              
              $.ajax({
             type: 'post',
+            headers: {
+               'Authorization': cate.Authorization,
+               
+              },
             url: "http://localhost:8088/dormitory/user/add",
             contentType: "application/json;charset=UTF-8",
             data: JSON.stringify(data.field),

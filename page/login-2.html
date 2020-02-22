@@ -104,15 +104,19 @@
              $.ajax({
         
             type: 'post',
-            url: "http://localhost:8088/user/login",
+            url: "http://localhost:8088/login",
             xhrFields: {withCredentials: true},//解决跨域 session失效问题
             crossDomain: true,
             contentType: "application/json;charset=UTF-8",
             data: JSON.stringify(data),
-            dataType: "json",
+            dataType: "json", 
             success: function (result) {
                 // console.log(result)
                 if (result.success === true) {
+                    layui.data('test', {
+                            key: "Authorization",
+                            value: result.data.token
+                        });
                     layer.msg(result.message, function () {
                     window.location = '/user-index.html';
                 });

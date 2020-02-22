@@ -22,13 +22,19 @@ overflow: visible !important;
     <form class="layui-form" action="" id="cusForm">
    
     <div class="layui-form-item">
-        <label class="layui-form-label required">用户名</label>
+        <label class="layui-form-label required">真实姓名</label>
         <div class="layui-input-block">
             <input type="text" name="name" disabled="" id="name" lay-verify="required" lay-reqtext="用户名不能为空" placeholder="请输入用户名" value="" class="layui-input">
            
         </div>
     </div>
-     
+     <div class="layui-form-item">
+        <label class="layui-form-label required">用户名</label>
+        <div class="layui-input-block">
+            <input type="text" name="username" disabled="" id="username" lay-verify="required" lay-reqtext="用户名不能为空" placeholder="请输入用户名" value="" class="layui-input">
+           
+        </div>
+    </div>
     <div class="layui-form-item">
         <label class="layui-form-label required">原密码</label>
         <div class="layui-input-block">
@@ -68,7 +74,7 @@ overflow: visible !important;
 <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script>
      var userId = window.location.href.split("=")[1];
-
+      var cate = layui.data('test');
     console.log(userId)
     layui.use(['form'], function () {
         var form = layui.form,
@@ -77,6 +83,10 @@ overflow: visible !important;
         //数据回显
         $.ajax({
             type: "get",
+            headers: {
+               'Authorization': cate.Authorization,
+               
+              },
             url: "http://localhost:8088/dormitory/user/" + userId,
             success: function (result) {
                 // console.log(result);
@@ -112,6 +122,10 @@ overflow: visible !important;
         $.ajax({
             url: "http://localhost:8088/dormitory/role/list",
             type: "get",
+            headers: {
+               'Authorization': cate.Authorization,
+               
+              },
             // dataType: "json",
             // data: {
             //     csq: seone
@@ -149,7 +163,10 @@ overflow: visible !important;
             //     data.field.status=1;
             // }
              $.ajax({
-        
+            headers: {
+               'Authorization': cate.Authorization,
+               
+              },
             type: 'post',
             url: "http://localhost:8088/dormitory/user/mdpw",
             contentType: "application/json;charset=UTF-8",

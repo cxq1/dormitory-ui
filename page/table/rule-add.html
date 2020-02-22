@@ -76,13 +76,21 @@
             table = layui.table,
             form = layui.form,
             tableSelect = layui.tableSelect;
-
+             var cate = layui.data('test');
         tableSelect.render({
+            headers: {
+               'Authorization': cate.Authorization,
+               
+              },
             elem: '#roles',
             searchKey: 'my',
             checkedKey: 'id',
             searchPlaceholder: '自定义文字和name',
             table: {
+                headers: {
+               'Authorization': cate.Authorization,
+               
+              },
                 url: 'http://localhost:8088/dormitory/role/list',
                   parseData: function(res){
                   return {
@@ -183,7 +191,12 @@
             data.field.roles=rArr;
              console.log(data.field)
              $.ajax({
+
             type: 'post',
+            headers: {
+               'Authorization': cate.Authorization,
+               
+              },
             url: "http://localhost:8088/dormitory/power/add",
             contentType: "application/json;charset=UTF-8",
             data: JSON.stringify(data.field),
