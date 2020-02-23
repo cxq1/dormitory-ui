@@ -114,9 +114,27 @@
         var $ = layui.jquery,
             element = layui.element,
             layer = layui.layer;
-
-        layuimini.init('api/init.json');
-        var cate = layui.data('test');
+            var cate = layui.data('test');
+            //确认权限
+            $.ajax({
+                type:"post",
+                headers: {
+                   'Authorization': cate.Authorization,
+                   
+                  },
+                  url: "http://localhost:8088/checklogin",
+                    success: function (result) {
+                        console.log(result);
+                        // parent.location.reload();
+                        if(result.data.checked){
+                            layuimini.init('api/init.json');
+                        }else{
+                            window.location="user-index.html"
+                        }
+                    }
+            })
+        
+        
         $('.login-out').on("click", function () {
              $.ajax({
                     type: "post",
