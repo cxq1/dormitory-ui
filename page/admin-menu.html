@@ -74,18 +74,36 @@
             table = layui.table,
             layuimini = layui.layuimini;
 
+        var cate = layui.data('test');
+            //确认权限
+        $.ajax({
+            type:"post",
+            headers: {
+                'Authorization': cate.Authorization,
+                
+                },
+                url: "http://localhost:8088/checklogin",
+                success: function (result) {
+                    console.log(result);
+                    // parent.location.reload();
+                    if(result.data.checked){
+                        layuimini.init('api/init.json');
+                    }else{
+                        window.location="/page/login-1.html"
+                    }
+                }
+        })
+        console.log(cate.Authorization)
+
+
         table.render({
-            // elem: '#currentTableId',
-            // url: '../api/menus.json',
-            // toolbar: '#toolbarDemo',
-            // defaultToolbar: ['filter', 'exports', 'print', {
-            //     title: '提示',
-            //     layEvent: 'LAYTABLE_TIPS',
-            //     icon: 'layui-icon-tips'
-            // }],
             type: "get",
             xhrFields: {withCredentials: true},//解决跨域 session失效问题
-                            crossDomain: true,
+            crossDomain: true,
+            //增加请求头
+            headers: {
+                    'Authorization': cate.Authorization
+                    }, 
             elem: '#currentTableId',
             url: 'http://localhost:8088/dormitory/roominfo/admin/list',
             toolRow:true,
@@ -107,7 +125,7 @@
                 {type: "checkbox", width: 50, fixed: "left"},
                 {field: 'uid', width: 120, title: 'id', sort: true},
                 {field: 'name', width: 120, title: '姓名', sort: true},
-                {field: 'rinDate', width: 150, title: '入住日期',sort: true},
+                {field: 'rinData', width: 150, title: '入住日期',sort: true},
                 {field: 'dayNum', width: 150, title: '住的天数',sort: true},
                 {field: 'rtype', width: 150, title: '房间类型', sort: true},
                 {field: 'rprice', width: 120, title: '房间价格',sort: true},
@@ -196,6 +214,10 @@
                     //向服务端发送删除指令
                     $.ajax({
                             type: "DELETE",
+                            //增加请求头
+                            headers: {
+                                'Authorization': cate.Authorization
+                                }, 
                             url: "http://localhost:8088/dormitory/roominfo/admin/delete/"+data.id,
                             success: function (result) {
                                 console.log(result);
