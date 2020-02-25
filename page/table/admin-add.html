@@ -57,13 +57,19 @@
             <input type="email" name="mail" id="mail" placeholder="请输入邮箱" value="" class="layui-input">
         </div>
     </div>
-    <div class="layui-form-item">
+    <!-- <div class="layui-form-item">
         <label class="layui-form-label">角色</label>
         <div class="layui-input-block">
             
             <select name="roleName" id="roleName" lay-filter="gridding">
                 <option  value="">请选择角色</option>
             </select>
+        </div>
+    </div> -->
+    <div class="layui-form-item">
+        <label class="layui-form-label">单选</label>
+        <div class="layui-input-inline">
+            <input type="text" name="roleName" id="roleName" placeholder="请输入" autocomplete="off" class="layui-input" >
         </div>
     </div>
     <!-- <div class="layui-form-item">
@@ -79,12 +85,12 @@
         </div>
     </div>
     
-    <!-- div class="layui-form-item layui-form-text">
+    <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">状态</label>
         <div class="layui-input-block">
             <textarea name="remark" class="layui-textarea" placeholder="请输入备注信息"></textarea>
         </div>
-    </div> -->
+    </div>
     <div class="layui-form-item">
         <label class="layui-form-label">状态 默认禁用</label>
         <div class="layui-input-block">
@@ -99,40 +105,78 @@
 </form>
 </div>
 <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+
+<script src="../../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
 <script>
-    layui.use(['form'], function () {
+    layui.use(['table', 'form', 'tableSelect'], function () {
         var form = layui.form,
             layer = layui.layer,
+            tableSelect = layui.tableSelect;
             $ = layui.$;
             var cate = layui.data('test');
-            $.ajax({
-            url: "http://localhost:8088/dormitory/role/list",
-            type: "get",
-            headers: {
-               'Authorization': cate.Authorization,
-               
-              },
-            // dataType: "json",
-            // data: {
-            //     csq: seone
-            // },
-            success: function(data) {               
-                if (data.code == 0) {
-                    $("#roleName").empty();
-                    $("#roleName").append(new Option("请选择角色", "1"));
-                    $.each(data.data, function(index, item) {
-                        $.each(item,function(t,data){
-                        // console.log(data)
-                            $('#roleName').append(new Option(data.roleName,data.roleName));
 
-                        })
-                    });
-                } else {
-                    $("#roleName").append(new Option("暂无数据", ""));
+            tableSelect.render({
+                elem: '#roleName',
+                checkedKey: 'id',
+                table: {
+                    url: 'http://localhost:8088/dormitory/role/list',
+                    headers: {
+                            'Authorization': cate.Authorization
+                            },  
+                            parseData: function(res){
+                      return {
+                        "code": res.code, //解析接口状态
+                        "msg": res.message, //解析提示文本
+                        "count": res.data.count, //解析数据长度
+                        "data": res.data.data //解析数据列表
+                      };
+                      
+                    },
+                    cols: [[
+                        { type: 'radio' },
+                        { field: 'id', title: 'ID' },
+                        { field: 'roleName', title: '角色名' },
+                        // { field: 'sex', title: '性别' }
+                    ]]
+                },
+                done: function (elem, data) {
+                    var NEWJSON = []
+                    layui.each(data.data, function (index, item) {
+                        NEWJSON.push(item.roleName)
+                    })
+                    elem.val(NEWJSON.join(","))
                 }
-                layui.form.render("select");
-            }
-        })
+            })
+
+
+        //     $.ajax({
+        //     url: "http://localhost:8088/dormitory/role/list",
+        //     type: "get",
+        //     headers: {
+        //        'Authorization': cate.Authorization,
+               
+        //       },
+        //     // dataType: "json",
+        //     // data: {
+        //     //     csq: seone
+        //     // },
+        //     success: function(data) {               
+        //         if (data.code == 0) {
+        //             $("#roleName").empty();
+        //             $("#roleName").append(new Option("请选择角色", "1"));
+        //             $.each(data.data, function(index, item) {
+        //                 $.each(item,function(t,data){
+        //                 // console.log(data)
+        //                     $('#roleName').append(new Option(data.roleName,data.roleName));
+
+        //                 })
+        //             });
+        //         } else {
+        //             $("#roleName").append(new Option("暂无数据", ""));
+        //         }
+        //         layui.form.render("select");
+        //     }
+        // })
        //监听提交
         form.on('submit(saveBtn)', function (data) {
             
@@ -158,6 +202,7 @@
             contentType: "application/json;charset=UTF-8",
             data: JSON.stringify(data.field),
             dataType: "json",
+            // console.log(data.field)
             success: function (result) {
                 console.log(result)
                 if (result.success === true) {

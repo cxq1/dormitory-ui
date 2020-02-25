@@ -114,10 +114,44 @@
         var $ = layui.jquery,
             element = layui.element,
             layer = layui.layer;
-
-        layuimini.init('api/init.json');
-
+            var cate = layui.data('test');
+            //确认权限
+            $.ajax({
+                type:"post",
+                headers: {
+                   'Authorization': cate.Authorization,
+                   
+                  },
+                  url: "http://localhost:8088/checklogin",
+                    success: function (result) {
+                        console.log(result);
+                        // parent.location.reload();
+                        if(result.data.checked){
+                            layuimini.init('api/init.json');
+                        }else{
+                            window.location="user-index.html"
+                        }
+                    }
+            })
+        
+        
         $('.login-out').on("click", function () {
+             $.ajax({
+                    type: "post",
+                    headers: {
+                       'Authorization': cate.Authorization,
+                       
+                      },
+                    xhrFields: {withCredentials: true},//解决跨域 session失效问题
+                    crossDomain: true,
+                    url: "http://localhost:8088/logout",
+                    success: function (result) {
+                        console.log(result);
+                        // parent.location.reload();
+                    }
+
+                });
+
             layer.msg('退出登录成功', function () {
                 window.location = '/page/login-1.html';
             });

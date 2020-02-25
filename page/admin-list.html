@@ -88,6 +88,24 @@
             layuimini = layui.layuimini;
 
             var cate = layui.data('test');
+              //确认权限
+            $.ajax({
+                type:"post",
+                headers: {
+                   'Authorization': cate.Authorization,
+                   
+                  },
+                  url: "http://localhost:8088/checklogin",
+                    success: function (result) {
+                        console.log(result);
+                        // parent.location.reload();
+                        if(result.data.checked){
+                            layuimini.init('api/init.json');
+                        }else{
+                            window.location="/page/login-1.html"
+                        }
+                    }
+            })
             console.log(cate.Authorization)
         table.render({
             type: "get",
@@ -100,6 +118,7 @@
             elem: '#currentTableId',
             url: 'http://localhost:8088/dormitory/user/list',
             toolRow:true,
+      
             parseData: function(res){
               return {
                 "code": res.code, //解析接口状态
@@ -149,32 +168,7 @@
             var mail = $('#mail').val();
             var number = $('#number').val();
             var roleName = $('#roleName').val();
-            /*table.reload('currentTableId', {
-                method: 'post'
-                , where: {
-                    'data': data,
-
-                }
-                , page: {
-                    curr: 1
-                }
-            });*/
-
-            
-
-            // $.ajax({
-            //     type: "post",
-            //     url: "http://localhost:8088/dormitory/user/list?page=1&limit=10",
-            //     contentType: "application/json;charset=UTF-8",
-            //     data:JSON.stringify(data.field),
-            //     success: function (result) {
-            //         console.log(result);
-            //         var data=result.data.data
-
-            //     }
-
-            // });
-            // reload:function () {
+      
                 var name=$("#searname").val();
                 var roleName=$("#searroleName").val();
                 var number=$("#searnumber").val();
@@ -185,7 +179,7 @@
                     method:'post',
                     where:{name:name,roleName:roleName,number:number,mail:mail}
                 });
-            // }           
+               
 
 
             //执行搜索重载

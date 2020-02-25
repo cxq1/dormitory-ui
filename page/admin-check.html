@@ -89,8 +89,30 @@
             form = layui.form,
             table = layui.table,
             layuimini = layui.layuimini;
-
+            var cate = layui.data('test');
+               //确认权限
+            $.ajax({
+                type:"post",
+                headers: {
+                   'Authorization': cate.Authorization,
+                   
+                  },
+                  url: "http://localhost:8088/checklogin",
+                    success: function (result) {
+                        console.log(result);
+                        // parent.location.reload();
+                        if(result.data.checked){
+                            layuimini.init('api/init.json');
+                        }else{
+                            window.location="/page/login-1.html"
+                        }
+                    }
+            })
         table.render({
+            headers: {
+               'Authorization': cate.Authorization,
+               
+              },
             elem: '#currentTableId',
             url: 'http://localhost:8088/dormitory/reserve/list',
             xhrFields: {withCredentials: true},//解决跨域 session失效问题
@@ -212,6 +234,10 @@
             } else if (obj.event === 'delete') {
                 layer.confirm('真的删除行么', function (index) {
                     $.ajax({
+                        headers: {
+                           'Authorization': cate.Authorization,
+                           
+                          },
                             type: "DELETE",
                             xhrFields: {withCredentials: true},//解决跨域 session失效问题
                             crossDomain: true,
