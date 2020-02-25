@@ -10,6 +10,7 @@ window.rootPath = (function (src) {
 })();
 
 layui.config({
+    interceptor:true,
     base: rootPath + "lay-module/",
     version: true
 }).extend({

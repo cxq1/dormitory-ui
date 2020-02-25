@@ -55,13 +55,19 @@ overflow: visible !important;
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">角色</label>
-        <div class="layui-input-block">
-            
-            <select name="roleName" id="roleName" lay-filter="gridding">
-                <!-- <option  value="">请选择角色</option> -->
-            </select>
+        <div class="layui-input-inline">
+            <input type="text" name="roleName" id="roleName" placeholder="请输入" autocomplete="off" class="layui-input" >
         </div>
     </div>
+   <!--  <div class="layui-form-item">
+       <label class="layui-form-label">角色</label>
+       <div class="layui-input-block">
+           
+           <select name="roleName" id="roleName" lay-filter="gridding">
+               <option  value="">请选择角色</option>
+           </select>
+       </div>
+   </div> -->
     <!-- <div class="layui-form-item">
         <label class="layui-form-label">角色</label>
         <div class="layui-input-block">
@@ -100,7 +106,7 @@ overflow: visible !important;
      var userId = window.location.href.split("=")[1];
 
     console.log(userId)
-    layui.use(['form'], function () {
+    layui.use(['form','tableSelect'], function () {
         var form = layui.form,
             layer = layui.layer,
             $ = layui.$;
@@ -144,38 +150,71 @@ overflow: visible !important;
 
             }
         });
-
-        $.ajax({
-            url: "http://localhost:8088/dormitory/role/list",
-            type: "get",
-            // dataType: "json",
-            // data: {
-            //     csq: seone
-            // },
-            headers: {
-               'Authorization': cate.Authorization,
-               
-              },
-            success: function(data) {               
-                if (data.code == 0) {
-                    $("#roleName").empty();
-                    $("#roleName").append(new Option("请选择角色", "1"));
-                    $.each(data.data, function(index, item) {
-
-                        $.each(item,function(t,data){
-                        // console.log(t)
-                            $('#roleName').append(new Option(data.roleName,data.roleName));
-
-                        })
-                    });
-                } else {
-                    $("#roleName").append(new Option("暂无数据", ""));
+        tableSelect = layui.tableSelect;
+        tableSelect.render({
+                elem: '#roleName',
+                checkedKey: 'id',
+                table: { 
+                    url: 'http://localhost:8088/dormitory/role/list',
+                    headers: {
+                            'Authorization': cate.Authorization
+                            },  
+                            parseData: function(res){
+                      return {
+                        "code": res.code, //解析接口状态
+                        "msg": res.message, //解析提示文本
+                        "count": res.data.count, //解析数据长度
+                        "data": res.data.data //解析数据列表
+                      };
+                      
+                    },
+                    cols: [[
+                        { type: 'radio' },
+                        { field: 'id', title: 'ID' },
+                        { field: 'roleName', title: '角色名' },
+                        // { field: 'sex', title: '性别' }
+                    ]]
+                },
+                done: function (elem, data) {
+                    var NEWJSON = []
+                    layui.each(data.data, function (index, item) {
+                        NEWJSON.push(item.roleName)
+                    })
+                    elem.val(NEWJSON.join(","))
                 }
-                layui.form.render("select");
-                 form.render()
-            }
-            // layui.form.render("select");
-        })
+            })
+
+        // $.ajax({
+        //     url: "http://localhost:8088/dormitory/role/list",
+        //     type: "get",
+        //     // dataType: "json",
+        //     // data: {
+        //     //     csq: seone
+        //     // },
+        //     headers: {
+        //        'Authorization': cate.Authorization,
+               
+        //       },
+        //     success: function(data) {               
+        //         if (data.code == 0) {
+        //             $("#roleName").empty();
+        //             $("#roleName").append(new Option("请选择角色", "1"));
+        //             $.each(data.data, function(index, item) {
+
+        //                 $.each(item,function(t,data){
+        //                 // console.log(t)
+        //                     $('#roleName').append(new Option(data.roleName,data.roleName));
+
+        //                 })
+        //             });
+        //         } else {
+        //             $("#roleName").append(new Option("暂无数据", ""));
+        //         }
+        //         layui.form.render("select");
+        //          form.render()
+        //     }
+        //     // layui.form.render("select");
+        // })
 
     form.on('select(village)', function(data) {
             var seone = data.value;
