@@ -50,6 +50,8 @@
 
     <input type="hidden" name="id" id="id">
 
+    <!-- <input type="hidden" name="logicDelete" id="logicDelete" value="0"> -->
+
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">备注信息</label>
         <div class="layui-input-block">
@@ -70,6 +72,26 @@
             layer = layui.layer,
             $ = layui.$;
 
+        var cate=layui.data('test')
+
+        $.ajax({
+                type:"post",
+                headers: {
+                   'Authorization': cate.Authorization,
+                   
+                  },
+                  url: "http://localhost:8088/checklogin",
+                    success: function (result) {
+                        console.log(result);
+                        // parent.location.reload();
+                        if(result.data.checked){
+                            layuimini.init('api/init.json');
+                        }else{
+                            window.location="/page/login-1.html"
+                        }
+                    }
+            })
+        
        //监听提交
         form.on('submit(saveBtn)', function (data) {
             
@@ -84,9 +106,13 @@
             
             // data.field.roles=rArr;
              console.log(data.field)
-             
+
              $.ajax({
             type: 'post',
+            headers: {
+               'Authorization': cate.Authorization,
+               
+              },
             url: "http://localhost:8088/dormitory/roominfo/addRoom",
             contentType: "application/json;charset=UTF-8",
             data: JSON.stringify(data.field),

@@ -17,41 +17,43 @@
 <body>
 <div class="layui-form layuimini-form">
     <div class="layui-form-item">
-        <label class="layui-form-label required">用户名</label>
+        <label class="layui-form-label required">房间号码</label>
         <div class="layui-input-block">
-            <input type="text" name="username" lay-verify="required" lay-reqtext="用户名不能为空" placeholder="请输入用户名" value="" class="layui-input">
-            <tip>填写自己管理账号的名称。</tip>
+            <input type="text" name="rno" id="rno" lay-verify="required" lay-reqtext="房间号码不能为空" placeholder="请输入房间号码" value="" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label required">性别</label>
+        <label class="layui-form-label required">房间类型</label>
         <div class="layui-input-block">
-            <input type="radio" name="sex" value="男" title="男" checked="">
-            <input type="radio" name="sex" value="女" title="女">
+            <input type="radio" name="rtype" id="rtype1" value="single" title="单人间" checked="">
+            <input type="radio" name="rtype" id="rtype2" value="double" title="双人间">
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label required">手机</label>
+        <label class="layui-form-label required">房间价格</label>
         <div class="layui-input-block">
-            <input type="number" name="phone" lay-verify="required" lay-reqtext="手机不能为空" placeholder="请输入手机" value="" class="layui-input">
+            <input type="number" name="rprice" id="rprice" lay-verify="required" lay-reqtext="房价不能为空" placeholder="请输入房价" value="" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">邮箱</label>
+        <label class="layui-form-label">房间位置</label>
         <div class="layui-input-block">
-            <input type="email" name="email" placeholder="请输入邮箱" value="" class="layui-input">
+            <input type="text" name="rposition" id="rposition" placeholder="请输入房间位置" value="" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">职业</label>
+        <label class="layui-form-label">房间状态</label>
         <div class="layui-input-block">
-            <input type="text" name="work" placeholder="请输入职业" value="" class="layui-input">
+            <input type="text" name="rstatus" id="rstatus" placeholder="请输入房间状态" value="" class="layui-input">
         </div>
     </div>
+
+    <input type="hidden" name="id" id="id">
+
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">备注信息</label>
         <div class="layui-input-block">
-            <textarea name="remark" class="layui-textarea" placeholder="请输入备注信息"></textarea>
+            <textarea name="rnote" id="rnote" class="layui-textarea" placeholder="请输入备注信息"></textarea>
         </div>
     </div>
 
@@ -64,24 +66,103 @@
 </div>
 <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script>
+    var id = window.location.href.split("=")[1];
+
+    console.log(id)
+
     layui.use(['form'], function () {
         var form = layui.form,
             layer = layui.layer,
             $ = layui.$;
+        //数据回显
+        var cate = layui.data('test');
+        $.ajax({
+                type:"post",
+                headers: {
+                   'Authorization': cate.Authorization,
+                   
+                  },
+                  url: "http://localhost:8088/checklogin",
+                    success: function (result) {
+                        console.log(result);
+                        // parent.location.reload();
+                        if(result.data.checked){
+                            layuimini.init('api/init.json');
+                        }else{
+                            window.location="/page/login-1.html"
+                        }
+                    }
+            })
+        
+        $.ajax({
+            type: "get",
+             headers: {
+               'Authorization': cate.Authorization,
+               
+              },
+            url: "http://localhost:8088/dormitory/roominfo/queryRoom/" + id ,
+
+            success: function (result) {
+                // console.log(result);
+                $("#rno").val(result.data.data.rno);
+                var rtype= result.data.data.rtype;
+                // console.log(sex)
+                if(rtype==="single"){
+                    $("#rtype1").attr("checked","checked");
+                    $("#rtype2").removeAttr("checked");  
+                }else{
+                    $("#rtype2").attr("checked","checked");
+                    $("#rtype1").removeAttr("checked"); 
+                }
+                $("#id").val(result.data.data.id);
+                $("#rprice").val(result.data.data.rprice);
+                $("#rstatus").val(result.data.data.rstatus);
+                $("#rnote").val(result.data.data.rnote);
+                $("#rposition").val(result.data.data.rposition)
+                form.render()
+            }
+        });
+
 
         //监听提交
         form.on('submit(saveBtn)', function (data) {
-            var index = layer.alert(JSON.stringify(data.field), {
-                title: '最终的提交信息'
-            }, function () {
+            console.log(data.field)
 
-                // 关闭弹出层
-                layer.close(index);
+            $.ajax({
+        
+            type: 'post',
+            headers: {
+               'Authorization': cate.Authorization,
+               
+              },
+            url: "http://localhost:8088/dormitory/roominfo/updateRoom",
+            contentType: "application/json;charset=UTF-8",
+            data: JSON.stringify(data.field),
+            dataType: "json",
+            headers: {
+               'Authorization': cate.Authorization,
+               
+              },
+            success: function (result) {
+                // console.log(result)
+                if (result.success === true) {
+                    layer.msg('更新成功', {
+                        time: 800,
+                        icon: 1
+                    }, function () {
+                        let index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                         parent.location.reload();
+                    });
+                } else {
+                    layer.msg('更新失败', {
+                        time: 800,
+                        icon: 2
+                    });
+                }
+            }
 
-                var iframeIndex = parent.layer.getFrameIndex(window.name);
-                parent.layer.close(iframeIndex);
-
-            });
+        });
 
             return false;
         });

@@ -52,7 +52,7 @@
           },
           {
             "title": "住房查询",
-            "href": "page/table.html",
+            "href": "page/user-table.html",
             "icon": "fa fa-file-text",
             "target": "_self"
           },

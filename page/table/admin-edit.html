@@ -150,7 +150,8 @@ overflow: visible !important;
 
             }
         });
-        tableSelect = layui.tableSelect;
+        
+tableSelect = layui.tableSelect;
         tableSelect.render({
                 elem: '#roleName',
                 checkedKey: 'id',
@@ -184,6 +185,10 @@ overflow: visible !important;
                 }
             })
 
+        form.on('select(village)', function(data) {
+            var seone = data.value;
+
+        })
         // $.ajax({
         //     url: "http://localhost:8088/dormitory/role/list",
         //     type: "get",
@@ -216,10 +221,7 @@ overflow: visible !important;
         //     // layui.form.render("select");
         // })
 
-    form.on('select(village)', function(data) {
-            var seone = data.value;
-
-        })
+    
 
         //监听提交
         form.on('submit(saveBtn)', function (data) {
