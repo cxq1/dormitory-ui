@@ -62,8 +62,8 @@
                 <div class="layui-input-block">
                     <select name="dormitory" lay-filter="leixing">
                         <option value=""></option>
-                        <option value="0" selected="">单人宿舍</option>
-                        <option value="1">双人宿舍</option>
+                        <option value="单人" selected="">单人</option>
+                        <option value="双人">双人</option>
                         <!-- <option value="2">游戏</option>
                         <option value="3">音乐</option>
                         <option value="4">旅行</option> -->
@@ -90,7 +90,7 @@
                     <label class="layui-form-label">入住日期</label>
                     <div class="layui-input-block">
                         <!-- <input type="text" name="date" id="date1" autocomplete="off" class="layui-input"> -->
-                        <input type="text" name="date" id="date" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                        <input type="text" name="rInDate" id="date" lay-verify="datetime" placeholder="yyyy-MM-dd HH:mm:ss" autocomplete="off" class="layui-input">
                     </div>
                 </div>
             </div>
@@ -136,13 +136,17 @@
             , layer = layui.layer
             , layedit = layui.layedit
             , laydate = layui.laydate;
+            $ = layui.$;
+        var cate = layui.data('test');
 
         //日期
         laydate.render({
             elem: '#date'
+            ,type: 'datetime'
         });
         laydate.render({
             elem: '#date1'
+            ,type: 'datetime'
         });
 
         //创建一个编辑器
@@ -163,6 +167,8 @@
             
         });
 
+
+
         //监听指定开关
         // form.on('switch(switchTest)', function (data) {
         //     layer.msg('开关checked：' + (this.checked ? 'true' : 'false'), {
@@ -173,10 +179,37 @@
 
         //监听提交
         form.on('submit(demo1)', function (data) {
-            layer.alert(JSON.stringify(data.field), {
-                title: '最终的提交信息'
-            })
-            return false;
+            $.ajax({
+            headers: {
+               'Authorization': cate.Authorization,
+               
+              },
+            type: 'post',
+            url: "http://localhost:8088/dormitory/roominfo/apply",
+            contentType: "application/json;charset=UTF-8",
+            data: JSON.stringify(data.field),
+            dataType: "json",
+            success: function (result) {
+                console.log(result)
+                if (result.success === true && result.data.count === "1") {
+                    layer.msg('添加成功', {
+                        time: 800,
+                        icon: 1
+                    }, function () {
+                        let index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                         parent.location.reload();
+                    });
+                } else {
+                    layer.msg('抱歉，暂时没有空房间', {
+                        time: 800,
+                        icon: 2
+                    });
+                }
+            }
+
+        });
+        return false;
         });
 
         //表单初始赋值
