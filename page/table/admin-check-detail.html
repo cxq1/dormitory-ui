@@ -213,7 +213,7 @@
         form.on('submit(saveBtn)', function (data) {
             console.log(data.field)
             var st = data.field.rstatus;
-            if(st="on"){
+            if(st==="on"){
                 data.field.checked=0;
             }else{
                 data.field.checked=1;
