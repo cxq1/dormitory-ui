@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../css/public.css" media="all">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-form layuimini-form">
+
+    <form class="layui-form" action="" id="cusForm">
+        <input type="hidden" name="id" id="id">
+        
+        <div class="layui-form-item">
+            <label class="layui-form-label">宿舍类型</label>
+            <div class="layui-input-block">
+                <!-- <select name="dormitory" id="dormitory" lay-filter="leixing">
+                    <option value=""></option>
+                    <option value="单人" selected="">单人</option>
+                    <option value="双人">双人</option>
+                </select> -->
+                <input type="text" name="dormitory" id="dormitory"  class="layui-input" disabled="disabled" lay-filter="leixing">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">入住天数</label>
+            <div class="layui-input-block">
+                <input type="text" name="dayNum" id="dayNum" class="layui-input" disabled="disabled" lay-filter="tianshu">
+            </div>
+        </div>
+        
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">入住日期</label>
+                <div class="layui-input-block">
+                    <!-- <input type="text" name="date" id="date1" autocomplete="off" class="layui-input"> -->
+                    <input type="text" name="rInDate" id="rInDate" lay-verify="datetime" placeholder="yyyy-MM-dd HH:mm:ss" autocomplete="off" class="layui-input" disabled="disabled">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">房间号</label>
+                <div class="layui-input-block">
+                    <!-- <input type="text" name="date" id="date1" autocomplete="off" class="layui-input"> -->
+                    <input type="text" name="rno" id="rno" lay-verify="datetime" class="layui-input" disabled="disabled">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">房间价格</label>
+                <div class="layui-input-block">
+                    <!-- <input type="text" name="date" id="date1" autocomplete="off" class="layui-input"> -->
+                    <input type="text" name="rprice" id="rprice" lay-verify="datetime"  autocomplete="off" class="layui-input" disabled="disabled">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">总共支出</label>
+                <div class="layui-input-block">
+                    <!-- <input type="text" name="date" id="date1" autocomplete="off" class="layui-input"> -->
+                    <input type="text" name="sumPrice" id="sumPrice" autocomplete="off" class="layui-input" disabled="disabled">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <input type="text" name="note" id="remarks" placeholder="请输入备注信息" autocomplete="off" class="layui-input" disabled="disabled">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">申请理由</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入申请理由" class="layui-textarea" lay-verify="reason" name="reason" id="reason" disabled="disabled"></textarea>
+            </div>
+        </div>
+
+        <!-- <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div> -->
+
+</form>
+</div>
+<script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script>
+    var roomId = window.location.href.split("=")[1];
+
+    console.log(roomId)
+
+    layui.use(['form','laydate'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            laydate = layui.laydate;
+            $ = layui.$;
+            var cate = layui.data('test');
+            // console.log(cate.Authorization)
+            //数据回显
+
+        //日期
+        laydate.render({
+            elem: '#rInDate'
+            ,type: 'datetime'
+        });
+
+        
+        $.ajax({
+            type: "get",
+            headers: {
+               'Authorization': cate.Authorization,
+               
+              },
+            url: "http://localhost:8088/dormitory/roominfo/see/roominfo/"+roomId,
+            success: function (result) {
+                console.log(result);
+                $("#id").val(result.data.data.id);
+                $("#dormitory").val(result.data.data.rtype);
+                $("#dayNum").val(result.data.data.dayNum);
+                $("#rInDate").val(result.data.data.rinDate);
+                $("#rno").val(result.data.data.rno);
+                $("#rprice").val(result.data.data.rprice);
+                $("#sumPrice").val(result.data.data.sumPrice);
+                $("#remarks").val(result.data.data.note);
+                $("#reason").val(result.data.data.reason);
+                form.render()
+                var status= $("#status").val(result.data.data.status);
+                if(status===0){
+                    $("#status").attr('checked','true')
+                }else{
+                    $("#status").removeAttr("checked")
+                }
+                form.render()
+            }
+        });
+    });
+</script>
+</body>
+</html>

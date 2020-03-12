@@ -24,7 +24,7 @@
 
         <script type="text/html" id="currentTableBar">
             <!-- <a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit">编辑</a> -->
-            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
+            <!-- <a class="layui-btn layui-btn-xs layui-btn-warm data-count-edit" lay-event="edit">修改</a> -->
         </script>
 
     </div>
@@ -38,6 +38,9 @@
             layuimini = layui.layuimini;
 
             var cate = layui.data('test');
+        
+            var nowTime = getDateTime();
+            console.log(nowTime);
 
         table.render({
             type: "get",
@@ -69,17 +72,65 @@
                 {type: "checkbox", width: 50, fixed: "left"},
                 // {field: 'id', width: 120, title: 'id', sort: true},
                 {field: 'rinDate', width: 200, title: '入住日期',sort: true},
-                {field: 'dayNum', width: 200, title: '入住天数'},
-                {field: 'rtype', width: 200, title: '房间类型', sort: true},
-                {field: 'rprice', width: 200, title: '房间价格'},
-                {field: 'sum', width: 200, title: '住房总价'},
-                {field: 'rno', minWidth: 200, title: '房间号码', sort: true}
-                // {title: '操作', minWidth: 50, templet: '#currentTableBar', fixed: "right", align: "center"}
+                {field: 'dayNum', width: 150, title: '入住天数'},
+                {field: 'rtype', width: 150, title: '房间类型', sort: true},
+                {field: 'rprice', width: 150, title: '房间价格'},
+                {field: 'sum', width: 150, title: '住房总价'},
+                {field: 'rno', width: 150, title: '房间号码', sort: true},
+                {field: 'checked', width: 150, title: '状态',templet: function(b){
+                    
+                    if (b.checked == "1") {
+                        return '<span class="layui-btn layui-btn-xs">未审核</span>';
+                    }else{
+                        return '<span class="layui-btn layui-btn-normal layui-btn-xs">已审核</span>';
+                    }
+                }},
+                {title: '操作', minWidth: 50, fixed: "right", align: "center", templet: function(dt){
+                    // console.log(nowTime);
+                    var rinDate = dt.rinDate.replace(/-/g,"/");
+                    nowTime = nowTime.replace(/-/g,"/");
+                    //小时差
+                    var a =(Date.parse(rinDate)-Date.parse(nowTime))/3600/1000;
+                    console.log(a);
+                    // if(a<0){
+                    //     console.log("ok");
+                    // }
+                    if(a>1){
+                        return '<a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit">修改</a>'
+                    }else{
+                        return '<a class="layui-btn layui-btn-xs layui-btn-warm data-count-see" lay-event="see">查看</a>'
+                    }
+                }}
             ]],
             limits: [10, 15, 20, 25, 50, 100],
             limit: 10,
             page: true
         });
+
+
+        function getDateTime(){
+            var dates = new Date();
+            dates.setDate(dates.getDate());
+
+            var years = dates.getFullYear();
+            var months = dates.getMonth()+1;
+            var days = dates.getDate();
+            var hours = dates.getHours();
+            var mins =dates.getMinutes(); 
+            var secs = dates.getSeconds();
+
+            if (months < 10) months = "0" + months;
+            if (days < 10) dates = "0" + days;
+            if (hours < 10) hours = "0" + hours;
+            if (mins < 10) minus = "0" + mins;
+            if (secs < 10) secs = "0" + secs;
+
+            var message_date=(years+"-"+months+"-"+days+" "+hours+":"+mins+":"+secs);
+
+            // console.log(message_date);
+            return message_date;
+        }
+
 
         // 监听搜索操作
         form.on('submit(data-search-btn)', function (data) {
@@ -101,79 +152,73 @@
             return false;
         });
 
-        // 监听添加操作
-        $(".data-add-btn").on("click", function () {
 
-            var index = layer.open({
-                title: '添加用户',
-                type: 2,
-                shade: 0.2,
-                maxmin:true,
-                shadeClose: true,
-                area: ['100%', '100%'],
-                content: '/page/table/add.html',
-            });
-            $(window).on("resize", function () {
-                layer.full(index);
-            });
 
-            return false;
-        });
 
-        // 监听删除操作
-        $(".data-delete-btn").on("click", function () {
-            var checkStatus = table.checkStatus('currentTableId')
-                , data = checkStatus.data;
-            layer.alert(JSON.stringify(data));
-        });
 
-        //监听表格复选框选择
-        table.on('checkbox(currentTableFilter)', function (obj) {
-            console.log(obj)
-        });
+        // // 监听添加操作
+        // $(".data-add-btn").on("click", function () {
+
+        //     var index = layer.open({
+        //         title: '添加用户',
+        //         type: 2,
+        //         shade: 0.2,
+        //         maxmin:true,
+        //         shadeClose: true,
+        //         area: ['100%', '100%'],
+        //         content: '/page/table/add.html',
+        //     });
+        //     $(window).on("resize", function () {
+        //         layer.full(index);
+        //     });
+
+        //     return false;
+        // });
+
+        // // 监听删除操作
+        // $(".data-delete-btn").on("click", function () {
+        //     var checkStatus = table.checkStatus('currentTableId')
+        //         , data = checkStatus.data;
+        //     layer.alert(JSON.stringify(data));
+        // });
+
+        // //监听表格复选框选择
+        // table.on('checkbox(currentTableFilter)', function (obj) {
+        //     console.log(obj)
+        // });
 
         table.on('tool(currentTableFilter)', function (obj) {
             var data = obj.data;
-            // if (obj.event === 'edit') {
+            if (obj.event === 'edit') {
 
-            //     var index = layer.open({
-            //         title: '编辑用户',
-            //         type: 2,
-            //         shade: 0.2,
-            //         maxmin:true,
-            //         shadeClose: true,
-            //         area: ['100%', '100%'],
-            //         content: '/page/table/edit.html',
-            //     });
-            //     $(window).on("resize", function () {
-            //         layer.full(index);
-            //     });
-            //     return false;
-            // } else if (obj.event === 'delete') {
-            //     layer.confirm('真的删除行么', function (index) {
-            //         obj.del();
-            //         //向服务端发送删除指令
-            //         $.ajax({
-            //                 type: "DELETE",
-            //                 headers: {
-            //                'Authorization': cate.Authorization,
-            //               },
-            //                 url: "http://localhost:8088/dormitory/roomcost/delete/",
-            //                 success: function (result) {
-            //                     console.log(result);
-            //                     // parent.location.reload();
-            //                 }
-
-            //             });
-            //             layer.msg('删除成功', {
-            //                 time: 800
-            //             });
-            //             table.reload('empTable', {
-            //                 url: "http://192.168.50.1:8000/admin-index.html#page/user-menu.html?mpi=m-p-i-2"
-            //             })
-            //             layer.close(index);
-            //     });
-            // }
+                var index = layer.open({
+                    title: '修改住宿信息',
+                    type: 2,
+                    shade: 0.2,
+                    maxmin:true,
+                    shadeClose: true,
+                    area: ['100%', '100%'],
+                    content: '/page/table/room-edit.html?roomId=' + data.id,
+                });
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
+                return false;
+            }else if(obj.event === 'see'){
+                var index = layer.open({
+                    title: '查看信息',
+                    type: 2,
+                    shade: 0.2,
+                    maxmin:true,
+                    shadeClose: true,
+                    area: ['100%', '100%'],
+                    content: '/page/table/room-see.html?roomId=' + data.id,
+                });
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
+                return false;
+            } 
         });
 
     });
